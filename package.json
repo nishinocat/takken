@@ -1,0 +1,17 @@
+{
+  "name": "takken-quiz-app",
+  "version": "1.0.0",
+  "description": "宅建1問1答 合格支援アプリ",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "test": "echo \"No tests configured\""
+  },
+  "keywords": [
+    "takken",
+    "quiz",
+    "study"
+  ],
+  "author": "西野秀樹",
+  "license": "MIT"
+}

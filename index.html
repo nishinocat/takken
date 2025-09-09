@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宅建1問1答 合格支援アプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>宅建1問1答</h1>
+            <div class="exam-countdown" id="examCountdown">
+                <span>試験まで</span>
+                <strong id="daysLeft">--</strong>
+                <span>日</span>
+            </div>
+        </header>
+        
+        <div class="stats-dashboard">
+            <div class="stat-card">
+                <div class="stat-value" id="totalTimeDisplay">0</div>
+                <div class="stat-label">分</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalQuestionsDisplay">0</div>
+                <div class="stat-label">問</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="correctRateDisplay">0</div>
+                <div class="stat-label">%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="todayQuestionsDisplay">0</div>
+                <div class="stat-label">今日</div>
+            </div>
+        </div>
+
+        <main id="mainContent">
+            <!-- スタート画面 -->
+            <div id="startScreen" class="start-screen">
+                <h2>学習モードを選択</h2>
+                <div class="start-options">
+                    <div class="start-card" data-mode="random">
+                        <div class="start-icon">🎲</div>
+                        <h3>ランダム出題</h3>
+                        <p>全250問からランダムに出題</p>
+                        <button class="start-btn" data-mode="random">スタート</button>
+                    </div>
+                    <div class="start-card" data-mode="category">
+                        <div class="start-icon">📚</div>
+                        <h3>項目別学習</h3>
+                        <p>分野を選んで集中学習</p>
+                        <button class="start-btn" data-mode="category">スタート</button>
+                    </div>
+                    <div class="start-card" data-mode="review">
+                        <div class="start-icon">🔄</div>
+                        <h3>復習モード</h3>
+                        <p>間違えた問題を重点学習</p>
+                        <button class="start-btn" data-mode="review">スタート</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 問題表示エリア -->
+            <div id="questionArea" class="question-area hidden">
+                <button class="back-to-menu" onclick="showStartScreen()">← メニュー</button>
+                <div class="question-header">
+                    <span id="categoryLabel" class="category-label"></span>
+                    <span id="questionNumber" class="question-number"></span>
+                </div>
+                <div id="questionText" class="question-text"></div>
+                <div class="answer-buttons">
+                    <button class="answer-btn" data-answer="true">○ 正しい</button>
+                    <button class="answer-btn" data-answer="false">× 誤り</button>
+                </div>
+                <div id="result" class="result hidden"></div>
+                <div id="explanation" class="explanation hidden"></div>
+                <button id="nextBtn" class="next-btn hidden">次の問題へ</button>
+            </div>
+
+            <!-- カテゴリ選択エリア -->
+            <div id="categoryArea" class="category-area hidden">
+                <button class="back-to-menu" onclick="showStartScreen()">← メニュー</button>
+                <h2>学習項目を選択</h2>
+                <div class="category-list">
+                    <button class="category-btn" data-category="rights">権利関係</button>
+                    <button class="category-btn" data-category="law">法令上の制限</button>
+                    <button class="category-btn" data-category="tax">税・その他</button>
+                    <button class="category-btn" data-category="business">宅建業法</button>
+                </div>
+                <div class="category-mode">
+                    <label>
+                        <input type="radio" name="categoryMode" value="random" checked>
+                        ランダム出題
+                    </label>
+                    <label>
+                        <input type="radio" name="categoryMode" value="sequential">
+                        順番に出題
+                    </label>
+                </div>
+            </div>
+
+            <!-- 復習エリア -->
+            <div id="reviewArea" class="review-area hidden">
+                <button class="back-to-menu" onclick="showStartScreen()">← メニュー</button>
+                <h2>間違えた問題を復習</h2>
+                <p id="reviewCount">復習対象: 0問</p>
+                <button id="startReviewBtn" class="start-review-btn">復習を開始</button>
+            </div>
+
+        </main>
+        
+        <!-- 常時表示分析エリア -->
+        <div class="analysis-sidebar">
+            <h3>進捗</h3>
+            <div id="masteryStats"></div>
+            <div id="recommendationText"></div>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
