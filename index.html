@@ -7,115 +7,191 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>宅建1問1答</h1>
-            <div class="exam-countdown" id="examCountdown">
-                <span>試験まで</span>
-                <strong id="daysLeft">--</strong>
-                <span>日</span>
+    <div class="app-container">
+        <!-- ヘッダー -->
+        <header class="app-header">
+            <div class="header-left">
+                <button class="home-btn" onclick="showStartScreen()" title="ホーム">🏠</button>
+                <h1>宅建マスター</h1>
+            </div>
+            <div class="header-center">
+                <div class="stat-mini">
+                    <span class="stat-icon">⏱</span>
+                    <span id="totalTimeDisplay">0</span>分
+                </div>
+                <div class="stat-mini">
+                    <span class="stat-icon">✅</span>
+                    <span id="totalQuestionsDisplay">0</span>問
+                </div>
+                <div class="stat-mini">
+                    <span class="stat-icon">🎯</span>
+                    <span id="correctRateDisplay">0</span>%
+                </div>
+                <div class="stat-mini">
+                    <span class="stat-icon">🔥</span>
+                    <span id="streakDisplay">0</span>連続
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="exam-countdown">
+                    <span>試験まで</span>
+                    <strong id="daysLeft">--</strong>日
+                </div>
             </div>
         </header>
-        
-        <div class="stats-dashboard">
-            <div class="stat-card">
-                <div class="stat-value" id="totalTimeDisplay">0</div>
-                <div class="stat-label">分</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="totalQuestionsDisplay">0</div>
-                <div class="stat-label">問</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="correctRateDisplay">0</div>
-                <div class="stat-label">%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="todayQuestionsDisplay">0</div>
-                <div class="stat-label">今日</div>
-            </div>
-        </div>
 
-        <main id="mainContent">
-            <!-- スタート画面 -->
-            <div id="startScreen" class="start-screen">
-                <h2>学習モードを選択</h2>
-                <div class="start-options">
-                    <div class="start-card" data-mode="random">
-                        <div class="start-icon">🎲</div>
-                        <h3>ランダム出題</h3>
-                        <p>全250問からランダムに出題</p>
-                        <button class="start-btn" data-mode="random">スタート</button>
-                    </div>
-                    <div class="start-card" data-mode="category">
-                        <div class="start-icon">📚</div>
-                        <h3>項目別学習</h3>
-                        <p>分野を選んで集中学習</p>
-                        <button class="start-btn" data-mode="category">スタート</button>
-                    </div>
-                    <div class="start-card" data-mode="review">
-                        <div class="start-icon">🔄</div>
-                        <h3>復習モード</h3>
-                        <p>間違えた問題を重点学習</p>
-                        <button class="start-btn" data-mode="review">スタート</button>
+        <!-- メインコンテンツ -->
+        <div class="app-body">
+            <!-- 左サイドバー（進捗） -->
+            <aside class="sidebar-left">
+                <div class="progress-card">
+                    <h3>今日の目標</h3>
+                    <div class="daily-goal">
+                        <div class="goal-progress">
+                            <div class="goal-fill" id="dailyProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="goal-text">
+                            <span id="dailyCount">0</span> / 20問
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- 問題表示エリア -->
-            <div id="questionArea" class="question-area hidden">
-                <button class="back-to-menu" onclick="showStartScreen()">← メニュー</button>
-                <div class="question-header">
-                    <span id="categoryLabel" class="category-label"></span>
-                    <span id="questionNumber" class="question-number"></span>
+                
+                <div class="progress-card">
+                    <h3>習熟度</h3>
+                    <div id="masteryCompact"></div>
                 </div>
-                <div id="questionText" class="question-text"></div>
-                <div class="answer-buttons">
-                    <button class="answer-btn" data-answer="true">○ 正しい</button>
-                    <button class="answer-btn" data-answer="false">× 誤り</button>
-                </div>
-                <div id="result" class="result hidden"></div>
-                <div id="explanation" class="explanation hidden"></div>
-                <button id="nextBtn" class="next-btn hidden">次の問題へ</button>
-            </div>
 
-            <!-- カテゴリ選択エリア -->
-            <div id="categoryArea" class="category-area hidden">
-                <button class="back-to-menu" onclick="showStartScreen()">← メニュー</button>
-                <h2>学習項目を選択</h2>
-                <div class="category-list">
-                    <button class="category-btn" data-category="rights">権利関係</button>
-                    <button class="category-btn" data-category="law">法令上の制限</button>
-                    <button class="category-btn" data-category="tax">税・その他</button>
-                    <button class="category-btn" data-category="business">宅建業法</button>
+                <div class="motivational">
+                    <p id="motivationalText">今日も頑張ろう！</p>
                 </div>
-                <div class="category-mode">
-                    <label>
-                        <input type="radio" name="categoryMode" value="random" checked>
-                        ランダム出題
-                    </label>
-                    <label>
-                        <input type="radio" name="categoryMode" value="sequential">
-                        順番に出題
-                    </label>
+            </aside>
+
+            <!-- メインエリア -->
+            <main class="main-content">
+                <!-- スタート画面 -->
+                <div id="startScreen" class="screen start-screen">
+                    <div class="welcome-message">
+                        <h2>今日も合格に向けて一歩前進！</h2>
+                        <p>あなたの学習スタイルを選んでください</p>
+                    </div>
+                    <div class="mode-cards">
+                        <div class="mode-card" onclick="startMode('random')">
+                            <div class="mode-emoji">🎲</div>
+                            <h3>ランダム</h3>
+                            <p>全250問から出題</p>
+                            <div class="mode-badge">おすすめ</div>
+                        </div>
+                        <div class="mode-card" onclick="startMode('category')">
+                            <div class="mode-emoji">📚</div>
+                            <h3>分野別</h3>
+                            <p>苦手を克服</p>
+                        </div>
+                        <div class="mode-card" onclick="startMode('review')">
+                            <div class="mode-emoji">🔄</div>
+                            <h3>復習</h3>
+                            <p id="reviewBadge">0問</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 復習エリア -->
-            <div id="reviewArea" class="review-area hidden">
-                <button class="back-to-menu" onclick="showStartScreen()">← メニュー</button>
-                <h2>間違えた問題を復習</h2>
-                <p id="reviewCount">復習対象: 0問</p>
-                <button id="startReviewBtn" class="start-review-btn">復習を開始</button>
-            </div>
+                <!-- 問題画面 -->
+                <div id="questionArea" class="screen question-screen hidden">
+                    <div class="question-container">
+                        <div class="question-meta">
+                            <span id="categoryLabel" class="category-badge"></span>
+                            <span id="questionNumber" class="question-num"></span>
+                        </div>
+                        <div id="questionText" class="question-text"></div>
+                        <div class="answer-area">
+                            <button class="answer-btn btn-true" data-answer="true">
+                                <span class="btn-icon">⭕</span>
+                                <span>正しい</span>
+                            </button>
+                            <button class="answer-btn btn-false" data-answer="false">
+                                <span class="btn-icon">❌</span>
+                                <span>誤り</span>
+                            </button>
+                        </div>
+                        <div id="result" class="result-box hidden"></div>
+                        <div id="explanation" class="explanation-box hidden"></div>
+                        <button id="nextBtn" class="next-btn hidden">次の問題へ →</button>
+                    </div>
+                </div>
 
-        </main>
-        
-        <!-- 常時表示分析エリア -->
-        <div class="analysis-sidebar">
-            <h3>進捗</h3>
-            <div id="masteryStats"></div>
-            <div id="recommendationText"></div>
+                <!-- カテゴリ選択画面 -->
+                <div id="categoryArea" class="screen category-screen hidden">
+                    <h2>学習分野を選択</h2>
+                    <div class="category-grid">
+                        <div class="category-card" onclick="selectCategory('rights')">
+                            <div class="category-emoji">⚖️</div>
+                            <h3>権利関係</h3>
+                            <p>65問</p>
+                        </div>
+                        <div class="category-card" onclick="selectCategory('law')">
+                            <div class="category-emoji">📋</div>
+                            <h3>法令上の制限</h3>
+                            <p>65問</p>
+                        </div>
+                        <div class="category-card" onclick="selectCategory('tax')">
+                            <div class="category-emoji">💰</div>
+                            <h3>税・その他</h3>
+                            <p>60問</p>
+                        </div>
+                        <div class="category-card" onclick="selectCategory('business')">
+                            <div class="category-emoji">🏢</div>
+                            <h3>宅建業法</h3>
+                            <p>60問</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 復習画面 -->
+                <div id="reviewArea" class="screen review-screen hidden">
+                    <div class="review-container">
+                        <h2>復習モード</h2>
+                        <div class="review-info">
+                            <div class="review-count-circle">
+                                <span id="reviewCount">0</span>
+                                <span>問</span>
+                            </div>
+                            <p>間違えた問題を完璧にマスターしよう！</p>
+                        </div>
+                        <button id="startReviewBtn" class="action-btn">復習を開始</button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- 右サイドバー（実績） -->
+            <aside class="sidebar-right">
+                <div class="achievement-card">
+                    <h3>🏆 実績</h3>
+                    <div class="achievement-list">
+                        <div class="achievement" id="ach1">
+                            <span class="ach-icon">🌟</span>
+                            <span>初心者</span>
+                        </div>
+                        <div class="achievement" id="ach2">
+                            <span class="ach-icon">⭐</span>
+                            <span>10問達成</span>
+                        </div>
+                        <div class="achievement" id="ach3">
+                            <span class="ach-icon">💫</span>
+                            <span>連続正解</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="level-card">
+                    <h3>レベル</h3>
+                    <div class="level-display">
+                        <span class="level-num" id="userLevel">1</span>
+                        <div class="level-bar">
+                            <div class="level-fill" id="levelProgress" style="width: 0%"></div>
+                        </div>
+                        <span class="level-exp" id="expText">0 / 100 EXP</span>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 

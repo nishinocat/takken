@@ -14,7 +14,10 @@ const app = {
         HISTORY: 'takken_history',
         STATS: 'takken_stats',
         REVIEW: 'takken_review',
-        TOTAL_TIME: 'takken_total_time'
+        TOTAL_TIME: 'takken_total_time',
+        DAILY_STATS: 'takken_daily_stats',
+        ACHIEVEMENTS: 'takken_achievements',
+        USER_LEVEL: 'takken_user_level'
     },
     
     // 学習履歴
@@ -28,7 +31,23 @@ const app = {
             tax: { total: 0, correct: 0 },
             business: { total: 0, correct: 0 }
         }
-    }
+    },
+    
+    // ゲーミフィケーション
+    dailyStats: {
+        date: new Date().toDateString(),
+        questionsAnswered: 0,
+        correctAnswers: 0
+    },
+    streak: 0,
+    maxStreak: 0,
+    achievements: {
+        firstQuestion: false,
+        tenQuestions: false,
+        perfectStreak: false
+    },
+    userLevel: 1,
+    userExp: 0
 };
 
 // 初期化
@@ -39,12 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateExamCountdown();
     updateDashboard();
     showAnalysisSidebar();
+    updateGamification();
     // スタート画面を表示
     showStartScreen();
     
     // 定期的にデータを自動保存
     setInterval(() => {
         saveData();
+        updateHeaderStats();
     }, 5000); // 5秒ごとに自動保存
 });
 
@@ -54,13 +75,28 @@ function loadData() {
     const stats = localStorage.getItem(app.STORAGE_KEYS.STATS);
     const review = localStorage.getItem(app.STORAGE_KEYS.REVIEW);
     const totalTime = localStorage.getItem(app.STORAGE_KEYS.TOTAL_TIME);
+    const dailyStats = localStorage.getItem(app.STORAGE_KEYS.DAILY_STATS);
+    const achievements = localStorage.getItem(app.STORAGE_KEYS.ACHIEVEMENTS);
+    const userLevel = localStorage.getItem(app.STORAGE_KEYS.USER_LEVEL);
     
     if (history) app.history = JSON.parse(history);
     if (stats) app.stats = JSON.parse(stats);
     if (review) app.reviewQuestions = JSON.parse(review);
+    if (dailyStats) {
+        const saved = JSON.parse(dailyStats);
+        if (saved.date === new Date().toDateString()) {
+            app.dailyStats = saved;
+        }
+    }
+    if (achievements) app.achievements = JSON.parse(achievements);
+    if (userLevel) {
+        const levelData = JSON.parse(userLevel);
+        app.userLevel = levelData.level || 1;
+        app.userExp = levelData.exp || 0;
+    }
     if (totalTime) {
         const savedTime = parseInt(totalTime);
-        document.getElementById('totalTime').textContent = `学習時間: ${Math.floor(savedTime / 60)}分`;
+        document.getElementById('totalTimeDisplay').textContent = Math.floor(savedTime / 60);
     }
 }
 
@@ -69,6 +105,12 @@ function saveData() {
     localStorage.setItem(app.STORAGE_KEYS.HISTORY, JSON.stringify(app.history));
     localStorage.setItem(app.STORAGE_KEYS.STATS, JSON.stringify(app.stats));
     localStorage.setItem(app.STORAGE_KEYS.REVIEW, JSON.stringify(app.reviewQuestions));
+    localStorage.setItem(app.STORAGE_KEYS.DAILY_STATS, JSON.stringify(app.dailyStats));
+    localStorage.setItem(app.STORAGE_KEYS.ACHIEVEMENTS, JSON.stringify(app.achievements));
+    localStorage.setItem(app.STORAGE_KEYS.USER_LEVEL, JSON.stringify({
+        level: app.userLevel,
+        exp: app.userExp
+    }));
     
     const currentTotalTime = parseInt(localStorage.getItem(app.STORAGE_KEYS.TOTAL_TIME) || 0);
     const sessionTime = Math.floor((Date.now() - app.sessionStartTime) / 1000);
@@ -97,6 +139,12 @@ function initEventListeners() {
     
     // 次の問題ボタン
     document.getElementById('nextBtn').addEventListener('click', showQuestion);
+    
+    // 復習開始ボタン
+    document.getElementById('startReviewBtn')?.addEventListener('click', () => {
+        app.currentMode = 'review';
+        startReview();
+    });
     
     // カテゴリ選択
     document.querySelectorAll('.category-btn').forEach(btn => {
@@ -206,23 +254,44 @@ function checkAnswer(userAnswer) {
     resultDiv.classList.remove('hidden', 'correct', 'incorrect');
     
     if (isCorrect) {
-        resultDiv.textContent = '正解！';
+        resultDiv.textContent = '🎉 正解！';
         resultDiv.classList.add('correct');
         app.stats.correct++;
         app.stats.categories[app.currentQuestion.category].correct++;
+        
+        // ストリーク更新
+        app.streak++;
+        if (app.streak > app.maxStreak) {
+            app.maxStreak = app.streak;
+        }
+        
+        // 経験値獲得
+        app.userExp += 10;
     } else {
-        resultDiv.textContent = '不正解';
+        resultDiv.textContent = '❌ 不正解';
         resultDiv.classList.add('incorrect');
+        
+        // ストリークリセット
+        app.streak = 0;
         
         // 復習リストに追加
         if (!app.reviewQuestions.includes(app.currentQuestion.id)) {
             app.reviewQuestions.push(app.currentQuestion.id);
         }
+        
+        // 経験値獲得（少なめ）
+        app.userExp += 3;
     }
     
     // 統計更新
     app.stats.total++;
     app.stats.categories[app.currentQuestion.category].total++;
+    
+    // 日次統計更新
+    app.dailyStats.questionsAnswered++;
+    if (isCorrect) {
+        app.dailyStats.correctAnswers++;
+    }
     
     // 履歴追加
     app.history.push({
@@ -242,6 +311,11 @@ function checkAnswer(userAnswer) {
         btn.disabled = true;
         btn.style.opacity = '0.5';
     });
+    
+    // ゲーミフィケーション更新
+    updateGamification();
+    checkAchievements();
+    saveData();
     
     // 復習モードの場合、正解したら復習リストから削除
     if (app.currentMode === 'review' && isCorrect) {
@@ -371,8 +445,8 @@ function showAnalysisSidebar() {
 
 // 本試験までのカウントダウン
 function updateExamCountdown() {
-    // 2025年の宅建試験日（通常10月第3日曜日）
-    const examDate = new Date('2025-10-19'); // 2025年10月19日（仮）
+    // 令和7年（2025年）宅建士試験日
+    const examDate = new Date('2025-10-19'); // 令和7年10月19日（日）
     const today = new Date();
     const diffTime = examDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -426,6 +500,183 @@ function calculateMastery() {
     });
     
     return mastery;
+}
+
+// 新しいゲーミフィケーション機能
+
+// ヘッダー統計の更新
+function updateHeaderStats() {
+    const totalTime = parseInt(localStorage.getItem(app.STORAGE_KEYS.TOTAL_TIME) || 0);
+    document.getElementById('totalTimeDisplay').textContent = Math.floor(totalTime / 60);
+    document.getElementById('totalQuestionsDisplay').textContent = app.stats.total;
+    
+    const correctRate = app.stats.total > 0 ? Math.round((app.stats.correct / app.stats.total) * 100) : 0;
+    document.getElementById('correctRateDisplay').textContent = correctRate;
+    
+    document.getElementById('streakDisplay').textContent = app.streak;
+}
+
+// 日次目標の更新
+function updateDailyGoal() {
+    const dailyTarget = 20;
+    const progress = Math.min((app.dailyStats.questionsAnswered / dailyTarget) * 100, 100);
+    
+    document.getElementById('dailyProgress').style.width = `${progress}%`;
+    document.getElementById('dailyCount').textContent = app.dailyStats.questionsAnswered;
+    
+    if (progress >= 100) {
+        document.getElementById('dailyProgress').textContent = '完了！';
+    }
+}
+
+// 実績システム
+function checkAchievements() {
+    let newAchievements = [];
+    
+    // 初心者実績
+    if (!app.achievements.firstQuestion && app.stats.total >= 1) {
+        app.achievements.firstQuestion = true;
+        newAchievements.push('初心者');
+        document.getElementById('ach1').classList.add('unlocked');
+    }
+    
+    // 10問達成
+    if (!app.achievements.tenQuestions && app.stats.total >= 10) {
+        app.achievements.tenQuestions = true;
+        newAchievements.push('10問達成');
+        document.getElementById('ach2').classList.add('unlocked');
+    }
+    
+    // 連続正解
+    if (!app.achievements.perfectStreak && app.streak >= 5) {
+        app.achievements.perfectStreak = true;
+        newAchievements.push('連続正解');
+        document.getElementById('ach3').classList.add('unlocked');
+    }
+    
+    // 実績通知（簡易版）
+    newAchievements.forEach(achievement => {
+        setTimeout(() => {
+            if (confirm(`🎉 実績解除: ${achievement}！`)) {
+                // 実績詳細を表示する場合の処理
+            }
+        }, 500);
+    });
+}
+
+// レベルシステム
+function updateLevel() {
+    const expPerLevel = 100;
+    const newLevel = Math.floor(app.userExp / expPerLevel) + 1;
+    
+    if (newLevel > app.userLevel) {
+        app.userLevel = newLevel;
+        setTimeout(() => {
+            if (confirm(`🎊 レベルアップ！レベル${app.userLevel}になりました！`)) {
+                // レベルアップボーナスなど
+            }
+        }, 1000);
+    }
+    
+    const currentLevelExp = app.userExp % expPerLevel;
+    const levelProgress = (currentLevelExp / expPerLevel) * 100;
+    
+    document.getElementById('userLevel').textContent = app.userLevel;
+    document.getElementById('levelProgress').style.width = `${levelProgress}%`;
+    document.getElementById('expText').textContent = `${currentLevelExp} / ${expPerLevel} EXP`;
+}
+
+// 習熟度コンパクト表示
+function updateMasteryCompact() {
+    const masteryDiv = document.getElementById('masteryCompact');
+    if (!masteryDiv) return;
+    
+    const categories = [
+        { key: 'rights', name: '権利関係' },
+        { key: 'law', name: '法令制限' },
+        { key: 'tax', name: '税・その他' },
+        { key: 'business', name: '宅建業法' }
+    ];
+    
+    masteryDiv.innerHTML = '';
+    
+    categories.forEach(cat => {
+        const catStat = app.stats.categories[cat.key];
+        const percentage = catStat.total > 0 ? Math.round((catStat.correct / catStat.total) * 100) : 0;
+        
+        const item = document.createElement('div');
+        item.className = 'mastery-item-compact';
+        item.innerHTML = `
+            <span class="mastery-label-compact">${cat.name}</span>
+            <div class="mastery-bar-compact">
+                <div class="mastery-fill-compact" style="width: ${percentage}%"></div>
+            </div>
+            <span class="mastery-percent-compact">${percentage}%</span>
+        `;
+        masteryDiv.appendChild(item);
+    });
+}
+
+// 励ましメッセージの更新
+function updateMotivationalText() {
+    const messages = [
+        '今日も頑張ろう！',
+        '合格に向けて前進中！',
+        'コツコツが勝つコツ！',
+        '努力は必ず報われる！',
+        '夢は叶えるもの！'
+    ];
+    
+    const correctRate = app.stats.total > 0 ? (app.stats.correct / app.stats.total) * 100 : 0;
+    let message = messages[0];
+    
+    if (correctRate >= 80) {
+        message = '素晴らしい成績です！';
+    } else if (correctRate >= 60) {
+        message = '順調に成長中！';
+    } else if (app.streak >= 3) {
+        message = '調子が上がってきた！';
+    }
+    
+    const msgElement = document.getElementById('motivationalText');
+    if (msgElement) {
+        msgElement.textContent = message;
+    }
+}
+
+// 復習問題数の更新
+function updateReviewBadge() {
+    const reviewCountElement = document.getElementById('reviewBadge');
+    if (reviewCountElement) {
+        reviewCountElement.textContent = `${app.reviewQuestions.length}問`;
+    }
+    
+    const reviewCount = document.getElementById('reviewCount');
+    if (reviewCount) {
+        reviewCount.textContent = app.reviewQuestions.length;
+    }
+}
+
+// 全ゲーミフィケーション要素の更新
+function updateGamification() {
+    updateHeaderStats();
+    updateDailyGoal();
+    updateMasteryCompact();
+    updateMotivationalText();
+    updateReviewBadge();
+    updateLevel();
+    
+    // 実績の表示状態を復元
+    if (app.achievements.firstQuestion) {
+        document.getElementById('ach1')?.classList.add('unlocked');
+    }
+    if (app.achievements.tenQuestions) {
+        document.getElementById('ach2')?.classList.add('unlocked');
+    }
+    if (app.achievements.perfectStreak) {
+        document.getElementById('ach3')?.classList.add('unlocked');
+    }
+}
 }
 
 // 分析表示
