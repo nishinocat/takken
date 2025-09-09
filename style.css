@@ -35,6 +35,8 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
+    position: relative;
+    z-index: 100;
 }
 
 .header-left {
@@ -139,6 +141,8 @@ body {
     width: 280px;
     padding: 20px;
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
 }
 
 /* 左サイドバー */
@@ -256,6 +260,8 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 0;
+    position: relative;
+    z-index: 2;
 }
 
 .screen {
@@ -936,8 +942,9 @@ body {
     
     .question-screen {
         padding: 12px;
-        max-height: calc(100vh - 140px);
-        overflow-y: auto;
+        height: calc(100vh - 140px);
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
     }
     
     .question-container {

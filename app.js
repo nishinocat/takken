@@ -543,10 +543,10 @@ function checkAchievements() {
         document.getElementById('ach1').classList.add('unlocked');
     }
     
-    // 10問達成
-    if (!app.achievements.tenQuestions && app.stats.total >= 10) {
+    // 30問達成
+    if (!app.achievements.tenQuestions && app.stats.total >= 30) {
         app.achievements.tenQuestions = true;
-        newAchievements.push('10問達成');
+        newAchievements.push('30問達成');
         document.getElementById('ach2').classList.add('unlocked');
     }
     
