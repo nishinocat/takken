@@ -86,6 +86,31 @@
             <main class="main-content">
                 <!-- スタート画面 -->
                 <div id="startScreen" class="screen start-screen">
+                    <!-- モバイル用ステータス表示 -->
+                    <div class="mobile-status-container">
+                        <div class="mobile-status-grid">
+                            <div class="mobile-stat-card">
+                                <h4>レベル</h4>
+                                <div class="stat-value" id="mobileLevel">1</div>
+                                <div class="stat-label" id="mobileExp">0/100 EXP</div>
+                            </div>
+                            <div class="mobile-stat-card">
+                                <h4>今日の学習</h4>
+                                <div class="stat-value" id="mobileTodayCount">0</div>
+                                <div class="stat-label">問完了</div>
+                            </div>
+                        </div>
+                        <div class="mobile-achievements">
+                            <div class="mobile-achievement" id="mobileAch1">🌟</div>
+                            <div class="mobile-achievement" id="mobileAch2">⭐</div>
+                            <div class="mobile-achievement" id="mobileAch3">💫</div>
+                        </div>
+                        <div class="mobile-mastery">
+                            <h4>習熟度</h4>
+                            <div class="mobile-mastery-list" id="mobileMastery"></div>
+                        </div>
+                    </div>
+                    
                     <div class="welcome-message">
                         <h2>今日も合格に向けて一歩前進！</h2>
                         <p>あなたの学習スタイルを選んでください</p>

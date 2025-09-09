@@ -747,9 +747,16 @@ function updateLevel() {
     const currentLevelExp = app.userExp % expPerLevel;
     const levelProgress = (currentLevelExp / expPerLevel) * 100;
     
+    // PC版の表示更新
     document.getElementById('userLevel').textContent = app.userLevel;
     document.getElementById('levelProgress').style.width = `${levelProgress}%`;
     document.getElementById('expText').textContent = `${currentLevelExp} / ${expPerLevel} EXP`;
+    
+    // モバイル版の表示更新
+    const mobileLevel = document.getElementById('mobileLevel');
+    const mobileExp = document.getElementById('mobileExp');
+    if (mobileLevel) mobileLevel.textContent = app.userLevel;
+    if (mobileExp) mobileExp.textContent = `${currentLevelExp}/100 EXP`;
 }
 
 // レベルリセット確認
@@ -850,20 +857,63 @@ function updateGamification() {
     updateMotivationalText();
     updateReviewBadge();
     updateLevel();
+    updateMobileStatus();
     
     // 実績の表示状態を復元
     if (app.achievements.firstQuestion) {
         document.getElementById('ach1')?.classList.add('unlocked');
         document.getElementById('achMini1')?.classList.add('unlocked');
+        document.getElementById('mobileAch1')?.classList.add('unlocked');
     }
     if (app.achievements.tenQuestions) {
         document.getElementById('ach2')?.classList.add('unlocked');
         document.getElementById('achMini2')?.classList.add('unlocked');
+        document.getElementById('mobileAch2')?.classList.add('unlocked');
     }
     if (app.achievements.perfectStreak) {
         document.getElementById('ach3')?.classList.add('unlocked');
         document.getElementById('achMini3')?.classList.add('unlocked');
+        document.getElementById('mobileAch3')?.classList.add('unlocked');
     }
+}
+
+// モバイル用ステータス更新
+function updateMobileStatus() {
+    // 今日の学習数
+    const today = new Date().toDateString();
+    const todayQuestions = app.history.filter(h => 
+        new Date(h.timestamp).toDateString() === today
+    ).length;
+    const mobileTodayCount = document.getElementById('mobileTodayCount');
+    if (mobileTodayCount) mobileTodayCount.textContent = todayQuestions;
+    
+    // 習熟度更新
+    const mobileMastery = document.getElementById('mobileMastery');
+    if (!mobileMastery) return;
+    
+    const categories = [
+        { key: 'rights', name: '権利', total: 82 },
+        { key: 'law', name: '法令', total: 78 },
+        { key: 'tax', name: '税', total: 60 },
+        { key: 'business', name: '宅建', total: 60 }
+    ];
+    
+    mobileMastery.innerHTML = '';
+    categories.forEach(cat => {
+        const correct = app.stats.categories[cat.key]?.correct || 0;
+        const percentage = Math.round((correct / cat.total) * 100);
+        
+        const item = document.createElement('div');
+        item.className = 'mobile-mastery-item';
+        item.innerHTML = `
+            <div class="mobile-mastery-label">${cat.name}</div>
+            <div class="mobile-mastery-bar">
+                <div class="mobile-mastery-fill" style="width: ${percentage}%"></div>
+            </div>
+            <div class="mobile-mastery-percent">${percentage}%</div>
+        `;
+        mobileMastery.appendChild(item);
+    });
 }
 
 // PWA（Progressive Web App）機能

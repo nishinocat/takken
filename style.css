@@ -960,6 +960,11 @@ body {
     font-weight: 600;
 }
 
+/* モバイル用ステータス（デフォルトは非表示） */
+.mobile-status-container {
+    display: none;
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 1200px) {
     .sidebar-left, .sidebar-right {
@@ -1063,14 +1068,8 @@ body {
     }
     
     .sidebar-left, .sidebar-right {
-        padding: 8px;
-        display: block;
-    }
-    
-    .sidebar-left > *, .sidebar-right > * {
-        margin-bottom: 8px;
-        min-width: auto;
-        width: 100%;
+        padding: 10px;
+        display: none;
     }
     
     .progress-card, .achievement-card, .level-card {
@@ -1083,15 +1082,132 @@ body {
     }
     
     .main-content {
-        padding: 8px;
+        padding: 10px;
         overflow: hidden;
+        width: 100%;
     }
     
     .start-screen, .category-screen, .review-screen {
-        padding: 10px;
+        padding: 15px;
         height: fit-content;
         max-height: calc(100vh - 140px);
         overflow-y: auto;
+    }
+    
+    /* ホーム画面にステータス表示を追加 */
+    .mobile-status-container {
+        display: block;
+        margin-bottom: 15px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .mobile-status-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .mobile-stat-card {
+        background: #f9f9fb;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+    }
+    
+    .mobile-stat-card h4 {
+        font-size: 11px;
+        color: #666;
+        margin-bottom: 4px;
+        font-weight: 600;
+    }
+    
+    .mobile-stat-card .stat-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #000;
+    }
+    
+    .mobile-stat-card .stat-label {
+        font-size: 10px;
+        color: #999;
+    }
+    
+    .mobile-achievements {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px;
+        background: #f5f5f7;
+        border-radius: 8px;
+    }
+    
+    .mobile-achievement {
+        font-size: 20px;
+        opacity: 0.3;
+        transition: all 0.3s;
+    }
+    
+    .mobile-achievement.unlocked {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    
+    .mobile-mastery {
+        margin-top: 10px;
+        padding: 10px;
+        background: #f9f9fb;
+        border-radius: 8px;
+    }
+    
+    .mobile-mastery h4 {
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+    }
+    
+    .mobile-mastery-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .mobile-mastery-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .mobile-mastery-label {
+        font-size: 10px;
+        color: #666;
+        flex: 0 0 50px;
+    }
+    
+    .mobile-mastery-bar {
+        flex: 1;
+        height: 4px;
+        background: #e5e5e7;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    
+    .mobile-mastery-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #34c759, #30d158);
+        transition: width 0.3s;
+    }
+    
+    .mobile-mastery-percent {
+        font-size: 10px;
+        font-weight: 600;
+        color: #000;
+        flex: 0 0 28px;
+        text-align: right;
     }
     
     .welcome-message {
