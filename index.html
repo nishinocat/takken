@@ -20,43 +20,42 @@
     <div class="app-container">
         <!-- ヘッダー -->
         <header class="app-header">
-            <div class="header-left">
+            <div class="header-top">
                 <button class="home-btn" onclick="showStartScreen()" title="ホーム">🏠</button>
                 <h1>宅建マスター</h1>
+                <div class="header-top-right">
+                    <button id="installBtn" class="install-btn hidden" title="ホーム画面に追加">📱</button>
+                    <div class="exam-countdown">
+                        <span>試験まで</span>
+                        <strong id="daysLeft">--</strong>日
+                    </div>
+                </div>
             </div>
-            <div class="header-center">
+            <div class="header-stats">
                 <div class="stat-mini stat-today">
-                    <span class="stat-icon">📅</span>
-                    <span>今日</span>
-                    <span id="dailyQuestionsDisplay">0</span>問
+                    <span>📅今日</span>
+                    <strong id="dailyQuestionsDisplay">0</strong>問
                 </div>
                 <div class="stat-mini">
-                    <span class="stat-icon">⏱</span>
-                    <span id="totalTimeDisplay">0</span>分
+                    <span>⏱</span>
+                    <strong id="totalTimeDisplay">0</strong>分
                 </div>
                 <div class="stat-mini">
-                    <span class="stat-icon">🎯</span>
-                    <span id="correctRateDisplay">0</span>%
+                    <span>🎯</span>
+                    <strong id="correctRateDisplay">0</strong>%
                 </div>
                 <div class="stat-mini">
-                    <span class="stat-icon">🔥</span>
-                    <span id="streakDisplay">0</span>連続
+                    <span>🔥</span>
+                    <strong id="streakDisplay">0</strong>
                 </div>
                 <div class="stat-mini">
-                    <span class="stat-icon">📊</span>
-                    <span>Lv.</span><span id="currentLevel">1</span>
+                    <span>Lv.</span>
+                    <strong id="currentLevel">1</strong>
                 </div>
-            </div>
-            <div class="header-right">
                 <div class="achievements-mini">
-                    <div class="achievement-mini" id="achMini1">🌟</div>
-                    <div class="achievement-mini" id="achMini2">⭐</div>
-                    <div class="achievement-mini" id="achMini3">💫</div>
-                </div>
-                <button id="installBtn" class="install-btn hidden" title="ホーム画面に追加">📱</button>
-                <div class="exam-countdown">
-                    <span>試験まで</span>
-                    <strong id="daysLeft">--</strong>日
+                    <span id="achMini1" class="achievement-mini">🌟</span>
+                    <span id="achMini2" class="achievement-mini">⭐</span>
+                    <span id="achMini3" class="achievement-mini">💫</span>
                 </div>
             </div>
         </header>
