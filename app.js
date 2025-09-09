@@ -521,7 +521,7 @@ function updateHeaderStats() {
 
 // 日次目標の更新
 function updateDailyGoal() {
-    const dailyTarget = 20;
+    const dailyTarget = 50;
     const progress = Math.min((app.dailyStats.questionsAnswered / dailyTarget) * 100, 100);
     
     document.getElementById('dailyProgress').style.width = `${progress}%`;
