@@ -349,8 +349,12 @@ function showQuestion() {
     if (app.currentMode === 'review' && app.reviewQuestions.length === 0) {
         console.log('復習リストが空になりました。復習完了！');
         alert('🎉 復習完了！全ての問題をマスターしました！');
-        showScreen('start');
+        // 問題画面を非表示
+        document.getElementById('questionArea').classList.add('hidden');
+        // スタート画面を表示
+        document.getElementById('startScreen').classList.remove('hidden');
         app.currentMode = 'random'; // モードをリセット
+        updateMobileStatus(); // モバイルステータスも更新
         return;
     }
     
@@ -506,8 +510,12 @@ function checkAnswer(userAnswer) {
         app.reviewQuestions.filter(id => id !== app.currentQuestion.id).length === 0) {
         nextBtn.textContent = 'ホームに戻る 🏠';
         nextBtn.onclick = () => {
-            showScreen('start');
+            // 問題画面を非表示
+            document.getElementById('questionArea').classList.add('hidden');
+            // スタート画面を表示
+            document.getElementById('startScreen').classList.remove('hidden');
             app.currentMode = 'random';
+            updateMobileStatus(); // モバイルステータスも更新
         };
     } else {
         nextBtn.textContent = '次の問題へ →';
