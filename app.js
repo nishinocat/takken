@@ -345,6 +345,13 @@ function startMode(mode) {
 
 // 問題表示
 function showQuestion() {
+    // 復習モードで問題がない場合の処理
+    if (app.currentMode === 'review' && app.reviewQuestions.length === 0) {
+        alert('🎉 復習完了！全ての問題をマスターしました！');
+        showScreen('start');
+        return;
+    }
+    
     app.isAnswered = false;
     app.startTime = Date.now();
     
@@ -369,6 +376,14 @@ function showQuestion() {
         const randomIndex = Math.floor(Math.random() * app.reviewQuestions.length);
         const reviewId = app.reviewQuestions[randomIndex];
         question = questions.find(q => q.id === reviewId);
+        
+        // 問題が見つからない場合は復習リストから削除して再選択
+        if (!question) {
+            app.reviewQuestions.splice(randomIndex, 1);
+            saveData();
+            showQuestion(); // 再帰的に次の問題を選択
+            return;
+        }
     } else {
         question = questions[Math.floor(Math.random() * questions.length)];
     }
@@ -491,14 +506,7 @@ function checkAnswer(userAnswer) {
     if (app.currentMode === 'review' && isCorrect) {
         app.reviewQuestions = app.reviewQuestions.filter(id => id !== app.currentQuestion.id);
         updateReviewArea();
-        
-        // 復習問題がなくなったら通知
-        if (app.reviewQuestions.length === 0) {
-            setTimeout(() => {
-                alert('🎉 復習完了！全ての問題をマスターしました！');
-                showScreen('start');
-            }, 1500);
-        }
+        saveData(); // 復習リストの変更を保存
     }
     
     // データ保存と統計更新
@@ -525,6 +533,7 @@ function startReview() {
         return;
     }
     
+    console.log('復習モード開始:', app.reviewQuestions); // デバッグ用
     app.currentMode = 'review';
     document.getElementById('reviewArea').classList.add('hidden');
     document.getElementById('questionArea').classList.remove('hidden');
