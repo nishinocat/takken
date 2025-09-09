@@ -688,30 +688,45 @@ let installBtn;
 function initPWA() {
     installBtn = document.getElementById('installBtn');
     
+    // 基本的にボタンを表示（デバッグ用）
+    if (installBtn) {
+        installBtn.style.display = 'block';
+        installBtn.classList.remove('hidden');
+    }
+    
+    // iOS Safari用の処理
+    if (isIOS() && !window.navigator.standalone) {
+        if (installBtn) {
+            installBtn.innerHTML = '🍎';
+            installBtn.title = 'ホーム画面に追加 (iOS)';
+            installBtn.style.background = '#007aff';
+            installBtn.addEventListener('click', showIOSInstallInstructions);
+        }
+        return;
+    }
+    
+    // 既にスタンドアローンモードで実行中の場合
+    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+        if (installBtn) {
+            installBtn.innerHTML = '✅';
+            installBtn.title = '既にインストール済み';
+            installBtn.style.background = '#34c759';
+            installBtn.style.animation = 'none';
+            installBtn.addEventListener('click', showAlreadyInstalledMessage);
+        }
+        return;
+    }
+    
     // PWAインストールプロンプトのイベントリスナー
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
         
-        // 既にインストール済みかチェック
-        if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-            // 既にインストール済みの場合は警告メッセージを表示
-            if (installBtn) {
-                installBtn.style.display = 'block';
-                installBtn.classList.remove('hidden');
-                installBtn.innerHTML = '⚠️';
-                installBtn.title = '既にインストール済み';
-                installBtn.style.background = '#ff9500';
-                installBtn.style.animation = 'none';
-                installBtn.addEventListener('click', showAlreadyInstalledMessage);
-            }
-        } else {
-            // インストール可能な場合
-            if (installBtn) {
-                installBtn.style.display = 'block';
-                installBtn.classList.remove('hidden');
-                installBtn.addEventListener('click', installApp);
-            }
+        if (installBtn) {
+            installBtn.innerHTML = '📱';
+            installBtn.title = 'ホーム画面に追加';
+            installBtn.style.background = '#007aff';
+            installBtn.addEventListener('click', installApp);
         }
     });
     
@@ -719,7 +734,10 @@ function initPWA() {
     window.addEventListener('appinstalled', (e) => {
         console.log('PWAがインストールされました');
         if (installBtn) {
-            installBtn.style.display = 'none';
+            installBtn.innerHTML = '✅';
+            installBtn.title = '既にインストール済み';
+            installBtn.style.background = '#34c759';
+            installBtn.style.animation = 'none';
         }
         deferredPrompt = null;
         
@@ -729,20 +747,20 @@ function initPWA() {
         }, 1000);
     });
     
-    // iOS Safari用の特別処理
-    if (isIOS() && !window.navigator.standalone) {
-        if (installBtn) {
-            installBtn.style.display = 'block';
-            installBtn.classList.remove('hidden');
-            installBtn.innerHTML = '🍎';
-            installBtn.title = 'ホーム画面に追加 (iOS)';
-            installBtn.addEventListener('click', showIOSInstallInstructions);
-        }
-    }
-    
-    // 既にスタンドアローンモードで実行中の場合
-    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-        console.log('PWAモードで実行中');
+    // デフォルトのフォールバック（Android Chrome等）
+    if (installBtn && !installBtn.onclick) {
+        installBtn.innerHTML = '📱';
+        installBtn.title = 'ホーム画面に追加';
+        installBtn.style.background = '#007aff';
+        installBtn.addEventListener('click', () => {
+            if (deferredPrompt) {
+                installApp();
+            } else if (isIOS()) {
+                showIOSInstallInstructions();
+            } else {
+                alert('📱 ホーム画面に追加する方法:\\n\\nブラウザのメニューから「ホーム画面に追加」を選択してください。');
+            }
+        });
     }
 }
 

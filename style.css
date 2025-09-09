@@ -870,62 +870,132 @@ body {
     }
     
     .start-screen, .question-screen, .category-screen, .review-screen {
-        padding: 15px;
+        padding: 10px;
         height: fit-content;
-        max-height: calc(100vh - 120px);
-        overflow-y: auto;
+        max-height: calc(100vh - 140px);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .welcome-message {
+        margin-bottom: 15px;
+        text-align: center;
     }
     
     .welcome-message h2 {
-        font-size: 20px;
-        margin-bottom: 15px;
+        font-size: 18px;
+        margin-bottom: 8px;
     }
     
     .welcome-message p {
-        font-size: 14px;
+        font-size: 12px;
+        margin-bottom: 0;
     }
     
     .mode-cards {
-        gap: 12px;
+        gap: 8px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
     }
     
     .mode-card {
-        padding: 20px 15px;
+        padding: 12px 10px;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        gap: 15px;
+        min-height: 0;
     }
     
     .mode-emoji {
-        font-size: 32px;
-        margin-bottom: 10px;
+        font-size: 28px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+    
+    .mode-card-content {
+        flex: 1;
     }
     
     .mode-card h3 {
         font-size: 16px;
+        margin-bottom: 2px;
+    }
+    
+    .mode-card p {
+        font-size: 12px;
+        margin: 0;
     }
     
     .question-container {
         max-height: calc(100vh - 140px);
         overflow-y: auto;
+        padding: 5px;
+    }
+    
+    .question-meta {
+        margin-bottom: 15px;
+    }
+    
+    .category-badge {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+    
+    .question-num {
+        font-size: 12px;
     }
     
     .question-text {
-        font-size: 16px;
-        line-height: 1.5;
-        margin-bottom: 20px;
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        padding: 15px;
+        background: #f9f9fb;
+        border-radius: 12px;
+        border-left: 4px solid #007aff;
     }
     
     .answer-area {
         grid-template-columns: 1fr;
-        gap: 12px;
-        margin-bottom: 20px;
+        gap: 10px;
+        margin-bottom: 15px;
     }
     
     .answer-btn {
-        padding: 20px;
-        min-height: 60px;
+        padding: 15px;
+        min-height: 50px;
+        font-size: 14px;
+        border-radius: 12px;
     }
     
     .btn-icon {
-        font-size: 24px;
+        font-size: 20px;
+    }
+    
+    .result-box {
+        padding: 12px;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    
+    .explanation-box {
+        padding: 12px;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        background: #fff9e6;
+        border-left: 4px solid #ffc107;
+    }
+    
+    .next-btn {
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
     }
     
     .category-grid {
@@ -940,21 +1010,40 @@ body {
         font-size: 32px;
     }
     
+    .achievement-card, .level-card {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .achievement-card h3, .level-card h3 {
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+    
     .achievement-list {
-        gap: 6px;
+        gap: 4px;
     }
     
     .achievement {
-        padding: 8px;
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+    
+    .ach-icon {
         font-size: 12px;
     }
     
     .level-num {
-        font-size: 36px;
-        margin-bottom: 10px;
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+    
+    .level-bar {
+        height: 12px;
+        margin-bottom: 5px;
     }
     
     .level-exp {
-        font-size: 12px;
+        font-size: 10px;
     }
 }
