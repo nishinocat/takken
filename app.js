@@ -404,29 +404,21 @@ function checkAnswer(userAnswer) {
         
         // HTML形式で確実に表示（スマホ対応）
         if (app.streak > 1) {
-            // COMBOを目立つように別要素で表示（重要：display指定で確実に表示）
+            // COMBOを目立つように別要素で表示
             const comboHtml = `
-                <div style="display: block !important; font-size: 1em !important; margin-bottom: 5px !important; color: white !important;">🎉 正解！</div>
-                <div style="display: block !important; font-size: 1.8em !important; color: #ff6b35 !important; font-weight: bold !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important; line-height: 1.2 !important;">
+                <div style="font-size: 1em; margin-bottom: 5px; color: white;">🎉 正解！</div>
+                <div style="font-size: 1.4em; color: #ffeb3b; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); line-height: 1.2;">
                     🔥 ${displayStreak} COMBO!!
                 </div>
-                <div style="display: block !important; font-size: 1.1em !important; margin-top: 5px !important; color: white !important;">+${points}ポイント獲得！</div>
+                <div style="font-size: 1em; margin-top: 5px; color: white;">+${points}ポイント獲得！</div>
             `;
             resultDiv.innerHTML = comboHtml;
-            // モバイル対応のため強制的に表示
-            resultDiv.style.display = 'block';
-            resultDiv.style.visibility = 'visible';
-            resultDiv.style.opacity = '1';
         } else {
             const normalHtml = `
-                <div style="display: block !important; font-size: 1.1em !important; color: white !important;">🎉 正解！</div>
-                <div style="display: block !important; font-size: 1em !important; margin-top: 5px !important; color: white !important;">+1ポイント獲得</div>
+                <div style="font-size: 1.1em; color: white;">🎉 正解！</div>
+                <div style="font-size: 1em; margin-top: 5px; color: white;">+1ポイント獲得</div>
             `;
             resultDiv.innerHTML = normalHtml;
-            // モバイル対応のため強制的に表示
-            resultDiv.style.display = 'block';
-            resultDiv.style.visibility = 'visible';
-            resultDiv.style.opacity = '1';
         }
         
         app.stats.correct++;
