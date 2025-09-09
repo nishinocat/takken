@@ -2,8 +2,18 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宅建1問1答 合格支援アプリ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>宅建マスター - 1問1答合格支援アプリ</title>
+    <meta name="description" content="令和7年宅建士試験対策アプリ。250問の過去問で効率学習！スクロール不要でサクサク学習。">
+    
+    <!-- PWA設定 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="宅建マスター">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,6 +43,7 @@
                 </div>
             </div>
             <div class="header-right">
+                <button id="installBtn" class="install-btn hidden" title="ホーム画面に追加">📱</button>
                 <div class="exam-countdown">
                     <span>試験まで</span>
                     <strong id="daysLeft">--</strong>日

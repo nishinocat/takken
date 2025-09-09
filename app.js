@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDashboard();
     showAnalysisSidebar();
     updateGamification();
+    initPWA(); // PWA機能の初期化
     // スタート画面を表示
     showStartScreen();
     
@@ -453,14 +454,16 @@ function updateExamCountdown() {
     
     const daysLeftElement = document.getElementById('daysLeft');
     if (daysLeftElement) {
+        console.log('Days calculation:', { examDate, today, diffTime, diffDays }); // デバッグ用
         if (diffDays > 0) {
             daysLeftElement.textContent = diffDays;
-            daysLeftElement.style.color = diffDays <= 30 ? '#e74c3c' : '#fff';
+            daysLeftElement.style.color = diffDays <= 30 ? '#ff3b30' : '#fff';
         } else if (diffDays === 0) {
             daysLeftElement.textContent = '今日';
             daysLeftElement.style.color = '#ffc107';
         } else {
             daysLeftElement.textContent = '終了';
+            daysLeftElement.style.color = '#ff3b30';
         }
     }
 }
@@ -677,6 +680,120 @@ function updateGamification() {
         document.getElementById('ach3')?.classList.add('unlocked');
     }
 }
+
+// PWA（Progressive Web App）機能
+let deferredPrompt;
+let installBtn;
+
+function initPWA() {
+    installBtn = document.getElementById('installBtn');
+    
+    // PWAインストールプロンプトのイベントリスナー
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // 既にインストール済みかチェック
+        if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+            // 既にインストール済みの場合は警告メッセージを表示
+            if (installBtn) {
+                installBtn.style.display = 'block';
+                installBtn.classList.remove('hidden');
+                installBtn.innerHTML = '⚠️';
+                installBtn.title = '既にインストール済み';
+                installBtn.style.background = '#ff9500';
+                installBtn.style.animation = 'none';
+                installBtn.addEventListener('click', showAlreadyInstalledMessage);
+            }
+        } else {
+            // インストール可能な場合
+            if (installBtn) {
+                installBtn.style.display = 'block';
+                installBtn.classList.remove('hidden');
+                installBtn.addEventListener('click', installApp);
+            }
+        }
+    });
+    
+    // アプリがインストールされた時の処理
+    window.addEventListener('appinstalled', (e) => {
+        console.log('PWAがインストールされました');
+        if (installBtn) {
+            installBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+        
+        // インストール成功メッセージ
+        setTimeout(() => {
+            alert('🎉 宅建マスターがホーム画面に追加されました！\\n\\nアプリのような使い心地で学習できます。');
+        }, 1000);
+    });
+    
+    // iOS Safari用の特別処理
+    if (isIOS() && !window.navigator.standalone) {
+        if (installBtn) {
+            installBtn.style.display = 'block';
+            installBtn.classList.remove('hidden');
+            installBtn.innerHTML = '🍎';
+            installBtn.title = 'ホーム画面に追加 (iOS)';
+            installBtn.addEventListener('click', showIOSInstallInstructions);
+        }
+    }
+    
+    // 既にスタンドアローンモードで実行中の場合
+    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('PWAモードで実行中');
+    }
+}
+
+function installApp() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('ユーザーがインストールを受け入れました');
+            } else {
+                console.log('ユーザーがインストールを拒否しました');
+            }
+            deferredPrompt = null;
+        });
+    }
+}
+
+function showAlreadyInstalledMessage() {
+    alert('✅ 宅建マスターは既にインストール済みです！\\n\\nホーム画面からアプリとして起動できます。\\n\\n📱 ホーム画面の「宅建マスター」アイコンをタップしてください。');
+}
+
+function showIOSInstallInstructions() {
+    alert('📱 iPhoneでホーム画面に追加する方法:\\n\\n' +
+          '1️⃣ 画面下部の共有ボタン (□↗) をタップ\\n' +
+          '2️⃣ 「ホーム画面に追加」をタップ\\n' +
+          '3️⃣ 「追加」をタップ\\n\\n' +
+          '🎉 ホーム画面にアイコンが追加され、アプリのように使えます！');
+}
+
+function isIOS() {
+    return [
+        'iPad Simulator',
+        'iPhone Simulator',
+        'iPod Simulator',
+        'iPad',
+        'iPhone',
+        'iPod'
+    ].includes(navigator.platform) || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+}
+
+// Service Worker登録（オフライン対応）
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then((registration) => {
+                console.log('Service Worker登録成功:', registration.scope);
+            })
+            .catch((error) => {
+                console.log('Service Worker登録失敗:', error);
+            });
+    });
 }
 
 // 分析表示
