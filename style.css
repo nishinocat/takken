@@ -75,6 +75,10 @@ body {
     transform: scale(1.1);
 }
 
+.home-btn:active {
+    transform: scale(0.95);
+}
+
 .header-stats {
     display: flex;
     justify-content: space-between;
@@ -82,6 +86,8 @@ body {
     padding: 8px 15px;
     gap: 10px;
     background: #f9f9fb;
+    position: relative;
+    z-index: 50;
 }
 
 .stat-mini {
@@ -151,6 +157,10 @@ body {
 .install-btn:hover {
     background: #0051d5;
     transform: scale(1.1);
+}
+
+.install-btn:active {
+    transform: scale(0.95);
 }
 
 @keyframes pulse {
@@ -236,19 +246,23 @@ body {
 #masteryCompact {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
+    padding: 5px 0;
 }
 
 .mastery-item-compact {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 4px;
+    line-height: 1.4;
 }
 
 .mastery-label-compact {
     font-size: 11px;
     color: #666;
     flex: 1;
+    max-width: 80px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -362,6 +376,11 @@ body {
     border-color: #000;
 }
 
+.mode-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
 .mode-emoji {
     font-size: 48px;
     margin-bottom: 15px;
@@ -416,6 +435,10 @@ body {
     color: #000;
 }
 
+.back-to-menu:active {
+    opacity: 0.7;
+}
+
 .mode-selector {
     display: flex;
     gap: 10px;
@@ -443,6 +466,10 @@ body {
 
 .mode-btn:hover:not(.active) {
     border-color: #000;
+}
+
+.mode-btn:active:not(.active) {
+    background: #f5f5f7;
 }
 
 /* 問題画面 */
@@ -517,14 +544,29 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
+.answer-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
 .btn-true:hover {
     border-color: #34c759;
     background: linear-gradient(135deg, #fff, #e8f5ea);
 }
 
+.btn-true:active {
+    border-color: #2fb347;
+    background: linear-gradient(135deg, #e8f5ea, #d4edd9);
+}
+
 .btn-false:hover {
     border-color: #ff3b30;
     background: linear-gradient(135deg, #fff, #ffebea);
+}
+
+.btn-false:active {
+    border-color: #e5342b;
+    background: linear-gradient(135deg, #ffebea, #ffd6d4);
 }
 
 .btn-icon {
@@ -538,13 +580,17 @@ body {
 }
 
 .result-box {
-    padding: 15px;
+    padding: 20px;
     border-radius: 12px;
     margin-bottom: 15px;
     font-weight: 600;
     text-align: center;
     font-size: 16px;
     animation: slideIn 0.3s ease;
+    min-height: 120px;
+    display: block;
+    position: relative;
+    z-index: 10;
 }
 
 @keyframes slideIn {
@@ -555,6 +601,8 @@ body {
 .result-box.correct {
     background: linear-gradient(135deg, #34c759, #30d158);
     color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .result-box.incorrect {
@@ -591,6 +639,11 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
+.next-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
 .hidden {
     display: none !important;
 }
@@ -617,6 +670,7 @@ body {
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
@@ -639,6 +693,10 @@ body {
     background: #000;
     color: #fff;
     transform: scale(1.1);
+}
+
+.popup-close:active {
+    transform: scale(0.95);
 }
 
 .popup-content h3 {
@@ -708,6 +766,11 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0,0,0,0.15);
     border-color: #000;
+}
+
+.category-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
 }
 
 .category-emoji {
@@ -804,6 +867,11 @@ body {
 .action-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
 }
 
 .action-btn:disabled {
@@ -948,7 +1016,9 @@ body {
     .header-stats {
         padding: 6px 10px;
         gap: 5px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .home-btn {
@@ -988,11 +1058,13 @@ body {
     
     .sidebar-left, .sidebar-right {
         padding: 8px;
+        display: block;
     }
     
     .sidebar-left > *, .sidebar-right > * {
         margin-bottom: 8px;
-        min-width: 180px;
+        min-width: auto;
+        width: 100%;
     }
     
     .progress-card, .achievement-card, .level-card {
@@ -1120,9 +1192,24 @@ body {
     }
     
     .result-box {
-        padding: 10px;
+        padding: 15px;
         font-size: 14px;
         margin-bottom: 10px;
+        min-height: 100px;
+        display: block !important;
+        text-align: center;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 100 !important;
+    }
+    
+    .result-box div {
+        margin: 0;
+        width: 100%;
+        text-align: center;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     .explanation-box {
@@ -1188,5 +1275,48 @@ body {
     
     .level-exp {
         font-size: 10px;
+    }
+    
+    /* ポップアップのモバイル最適化 */
+    .stat-popup {
+        z-index: 9999 !important;
+    }
+    
+    .popup-content {
+        padding: 20px !important;
+        max-width: 95% !important;
+        max-height: 90vh !important;
+    }
+    
+    .popup-content button {
+        min-height: 44px !important;
+        touch-action: manipulation;
+    }
+    
+    /* 習熟度表示のモバイル最適化 */
+    .mastery-item-compact {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+        gap: 5px;
+    }
+    
+    .mastery-label-compact {
+        font-size: 10px;
+        max-width: 60px;
+        flex: 0 0 60px;
+    }
+    
+    .mastery-bar-compact {
+        flex: 1;
+        width: auto;
+        margin: 0 5px;
+    }
+    
+    .mastery-percent-compact {
+        font-size: 10px;
+        width: 28px;
+        flex: 0 0 28px;
     }
 }
