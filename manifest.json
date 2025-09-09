@@ -1,7 +1,7 @@
 {
   "name": "宅建マスター - 1問1答合格支援アプリ",
   "short_name": "宅建マスター",
-  "description": "令和7年宅建士試験対策アプリ。250問の過去問で効率学習！",
+  "description": "令和7年宅建士試験対策アプリ。500問の過去問で効率学習！",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f5f5f7",
