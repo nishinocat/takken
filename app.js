@@ -511,12 +511,17 @@ function calculateMastery() {
 function updateHeaderStats() {
     const totalTime = parseInt(localStorage.getItem(app.STORAGE_KEYS.TOTAL_TIME) || 0);
     document.getElementById('totalTimeDisplay').textContent = Math.floor(totalTime / 60);
-    document.getElementById('totalQuestionsDisplay').textContent = app.stats.total;
+    
+    // 今日の問題数を表示
+    document.getElementById('dailyQuestionsDisplay').textContent = app.dailyStats.questionsAnswered;
     
     const correctRate = app.stats.total > 0 ? Math.round((app.stats.correct / app.stats.total) * 100) : 0;
     document.getElementById('correctRateDisplay').textContent = correctRate;
     
     document.getElementById('streakDisplay').textContent = app.streak;
+    
+    // レベル表示を更新
+    document.getElementById('currentLevel').textContent = app.userLevel;
 }
 
 // 日次目標の更新
@@ -540,21 +545,24 @@ function checkAchievements() {
     if (!app.achievements.firstQuestion && app.stats.total >= 1) {
         app.achievements.firstQuestion = true;
         newAchievements.push('初心者');
-        document.getElementById('ach1').classList.add('unlocked');
+        document.getElementById('ach1')?.classList.add('unlocked');
+        document.getElementById('achMini1')?.classList.add('unlocked');
     }
     
     // 30問達成
     if (!app.achievements.tenQuestions && app.stats.total >= 30) {
         app.achievements.tenQuestions = true;
         newAchievements.push('30問達成');
-        document.getElementById('ach2').classList.add('unlocked');
+        document.getElementById('ach2')?.classList.add('unlocked');
+        document.getElementById('achMini2')?.classList.add('unlocked');
     }
     
     // 連続正解
     if (!app.achievements.perfectStreak && app.streak >= 5) {
         app.achievements.perfectStreak = true;
         newAchievements.push('連続正解');
-        document.getElementById('ach3').classList.add('unlocked');
+        document.getElementById('ach3')?.classList.add('unlocked');
+        document.getElementById('achMini3')?.classList.add('unlocked');
     }
     
     // 実績通知（簡易版）
@@ -672,12 +680,15 @@ function updateGamification() {
     // 実績の表示状態を復元
     if (app.achievements.firstQuestion) {
         document.getElementById('ach1')?.classList.add('unlocked');
+        document.getElementById('achMini1')?.classList.add('unlocked');
     }
     if (app.achievements.tenQuestions) {
         document.getElementById('ach2')?.classList.add('unlocked');
+        document.getElementById('achMini2')?.classList.add('unlocked');
     }
     if (app.achievements.perfectStreak) {
         document.getElementById('ach3')?.classList.add('unlocked');
+        document.getElementById('achMini3')?.classList.add('unlocked');
     }
 }
 
