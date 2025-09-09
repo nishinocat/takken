@@ -1,4 +1,4 @@
-const CACHE_NAME = 'takken-master-v1';
+const CACHE_NAME = 'takken-master-v2';
 const urlsToCache = [
     '/',
     '/index.html',

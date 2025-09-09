@@ -2447,5 +2447,1641 @@ const questions = [
         question: "宅建業者は、守秘義務について宅建業法上の明文規定がある。",
         answer: false,
         explanation: "宅建業法には守秘義務の明文規定はありませんが、信義誠実の原則や個人情報保護法等により実質的に義務付けられています。"
+    },
+
+    // ========== 追加問題（50問）301-350 ==========
+    // 権利関係（13問）
+    {
+        id: 301,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "不動産の二重譲渡において、第二買主が先に登記を備えた場合、第一買主は所有権を主張できない。",
+        answer: true,
+        explanation: "不動産物権変動の対抗要件は登記であり、先に登記を備えた者が優先します（民法第177条）。"
+    },
+    {
+        id: 302,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "賃貸借契約において、敷金は賃料の6ヶ月分を超えて定めることはできない。",
+        answer: false,
+        explanation: "民法上、敷金の額に制限はありません。当事者間で自由に定めることができます。"
+    },
+    {
+        id: 303,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "瑕疵担保責任は、現在の民法では契約不適合責任と呼ばれる。",
+        answer: true,
+        explanation: "2020年4月施行の改正民法により、瑕疵担保責任は契約不適合責任に改められました。"
+    },
+    {
+        id: 304,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "養子は、実親との親族関係が終了する。",
+        answer: false,
+        explanation: "普通養子縁組では実親との親族関係は継続します。特別養子縁組の場合のみ実親との関係が終了します。"
+    },
+    {
+        id: 305,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "借地権の存続期間は、建物の種類に関わらず最低30年である。",
+        answer: true,
+        explanation: "借地借家法により、借地権の存続期間は建物の種類に関わらず最低30年です。"
+    },
+    {
+        id: 306,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "法定地上権は、土地と建物の所有者が異なる場合にのみ成立する。",
+        answer: false,
+        explanation: "法定地上権は、抵当権設定時に土地と建物が同一所有者で、競売により別々の所有者になった場合に成立します。"
+    },
+    {
+        id: 307,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "遺言は、15歳に達すれば単独で行うことができる。",
+        answer: true,
+        explanation: "民法第961条により、15歳に達した者は単独で遺言をすることができます。"
+    },
+    {
+        id: 308,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "賃借権の譲渡には、必ず賃貸人の承諾が必要である。",
+        answer: true,
+        explanation: "民法第612条により、賃借権の譲渡・転貸には賃貸人の承諾が必要です。無断譲渡は解除事由となります。"
+    },
+    {
+        id: 309,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "抵当権は、元本のほか最後の2年分の利息についても優先弁済を受けられる。",
+        answer: true,
+        explanation: "民法第375条により、抵当権は元本のほか、最後の2年分の利息について優先弁済権があります。"
+    },
+    {
+        id: 310,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "委任契約は、委任者・受任者いずれからでも、いつでも解除できる。",
+        answer: true,
+        explanation: "民法第651条により、委任契約は各当事者がいつでも解除できます。ただし、相手方に不利な時期の解除は損害賠償責任が生じることがあります。"
+    },
+    {
+        id: 311,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "事務管理において、本人の意思に反することが明らかでも、本人の利益になる場合は継続できる。",
+        answer: false,
+        explanation: "事務管理は本人の意思に反することが明らかな場合は原則として継続できません（生命身体財産の急迫の危害を免れさせる場合を除く）。"
+    },
+    {
+        id: 312,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "占有権は、所有の意思がなくても成立する。",
+        answer: true,
+        explanation: "占有権は、自己のためにする意思（所有の意思とは異なる）をもって物を所持することで成立します。賃借人も占有権を有します。"
+    },
+    {
+        id: 313,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "配偶者居住権は、登記をしなければ第三者に対抗できない。",
+        answer: true,
+        explanation: "2020年4月創設の配偶者居住権は、登記を対抗要件とします。"
+    },
+    
+    // 法令上の制限（12問）
+    {
+        id: 314,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "市街化区域内の1,000㎡未満の開発行為は、開発許可が不要である。",
+        answer: true,
+        explanation: "都市計画法により、市街化区域内では1,000㎡未満の開発行為は開発許可不要です。"
+    },
+    {
+        id: 315,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "準工業地域では、学校を建築することができない。",
+        answer: false,
+        explanation: "準工業地域では学校の建築が可能です。工業地域・工業専用地域では原則不可です。"
+    },
+    {
+        id: 316,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "建ぺい率80％の地域で、防火地域内の耐火建築物は建ぺい率が100％になる。",
+        answer: true,
+        explanation: "建ぺい率80％の地域で、防火地域内の耐火建築物は建ぺい率の制限がなくなります（100％）。"
+    },
+    {
+        id: 317,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "道路斜線制限は、前面道路の幅員が12m以上の場合は適用されない。",
+        answer: false,
+        explanation: "道路斜線制限の適用除外は、用途地域により異なり、住居系は12m以上、その他は12m超です。"
+    },
+    {
+        id: 318,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "農地の売買には、農地法第3条の許可が必要である。",
+        answer: true,
+        explanation: "農地を農地として売買する場合、農地法第3条の許可（農業委員会）が必要です。"
+    },
+    {
+        id: 319,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "都市計画事業の認可の告示後は、事業地内で建築物の建築が制限される。",
+        answer: true,
+        explanation: "都市計画法第65条により、都市計画事業認可の告示後は、事業地内での建築に都道府県知事の許可が必要です。"
+    },
+    {
+        id: 320,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "接道義務は、建築物の敷地が道路に1m以上接していれば満たされる。",
+        answer: false,
+        explanation: "建築基準法により、建築物の敷地は原則として道路に2m以上接する必要があります。"
+    },
+    {
+        id: 321,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "第一種住居地域では、床面積3,000㎡を超える店舗は建築できない。",
+        answer: true,
+        explanation: "第一種住居地域では、店舗等の床面積は3,000㎡以下に制限されています。"
+    },
+    {
+        id: 322,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "高度地区は、建築物の最高限度または最低限度を定める地区である。",
+        answer: true,
+        explanation: "都市計画法により、高度地区は建築物の高さの最高限度または最低限度を定める地区です。"
+    },
+    {
+        id: 323,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "宅地造成等規制法の許可を受けた宅地は、検査済証の交付後でなければ使用できない。",
+        answer: false,
+        explanation: "宅地造成等規制法では、工事完了後の検査済証交付前でも、知事の承認を得れば使用可能です。"
+    },
+    {
+        id: 324,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "地区計画の区域内では、届出だけで建築行為が可能である。",
+        answer: true,
+        explanation: "地区計画の区域内での建築等は、原則として市町村長への届出で足ります（条例により許可制の場合もあり）。"
+    },
+    {
+        id: 325,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "建築協定は、土地所有者等の全員の合意が必要である。",
+        answer: true,
+        explanation: "建築基準法により、建築協定の締結には土地所有者等の全員の合意が必要です。"
+    },
+    
+    // 税・その他（12問）
+    {
+        id: 326,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "長期譲渡所得の税率は、一律15％である。",
+        answer: false,
+        explanation: "長期譲渡所得の税率は、所得税15％、住民税5％の合計20％です（復興特別所得税を除く）。"
+    },
+    {
+        id: 327,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "居住用財産の3,000万円特別控除は、所有期間に関係なく適用できる。",
+        answer: true,
+        explanation: "居住用財産の3,000万円特別控除は、所有期間の要件はありません（居住期間等の要件はあり）。"
+    },
+    {
+        id: 328,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "新築住宅の固定資産税は、3年間2分の1に減額される。",
+        answer: true,
+        explanation: "一定要件を満たす新築住宅は、固定資産税が3年間（マンション等は5年間）2分の1に減額されます。"
+    },
+    {
+        id: 329,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "贈与税の基礎控除額は、年間110万円である。",
+        answer: true,
+        explanation: "暦年課税の贈与税には、年間110万円の基礎控除があります。"
+    },
+    {
+        id: 330,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "不動産所得の損失は、給与所得と損益通算できない。",
+        answer: false,
+        explanation: "不動産所得の損失は原則として給与所得等と損益通算できます（土地取得借入金利子を除く）。"
+    },
+    {
+        id: 331,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "収益還元法は、賃貸用不動産の評価に適している。",
+        answer: true,
+        explanation: "収益還元法は、賃料等の収益から不動産価格を求める方法で、賃貸用不動産の評価に適しています。"
+    },
+    {
+        id: 332,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "建物の減価償却方法は、定額法のみ認められている。",
+        answer: true,
+        explanation: "1998年4月1日以後に取得した建物、2016年4月1日以後に取得した建物附属設備等は定額法のみです。"
+    },
+    {
+        id: 333,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "住宅ローン控除の控除期間は、最長10年間である。",
+        answer: false,
+        explanation: "住宅ローン控除の控除期間は原則10年ですが、消費税率10％で取得した場合等は13年間です。"
+    },
+    {
+        id: 334,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "相続税の申告期限は、相続開始を知った日から10ヶ月以内である。",
+        answer: true,
+        explanation: "相続税の申告期限は、相続の開始があったことを知った日の翌日から10ヶ月以内です。"
+    },
+    {
+        id: 335,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "特定事業用資産の買換え特例は、先に買換資産を取得することもできる。",
+        answer: true,
+        explanation: "特定事業用資産の買換え特例は、先行取得も可能です（譲渡の前年中または譲渡年中）。"
+    },
+    {
+        id: 336,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "路線価は、相続税評価額の基準となり、公示地価の約80％である。",
+        answer: true,
+        explanation: "路線価は相続税・贈与税の土地評価の基準で、公示地価の約80％の水準に設定されています。"
+    },
+    {
+        id: 337,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "青色申告特別控除は、不動産所得でも65万円の控除が受けられる。",
+        answer: true,
+        explanation: "事業的規模の不動産所得で、複式簿記による記帳等の要件を満たせば65万円控除が可能です。"
+    },
+    
+    // 宅建業法（13問）
+    {
+        id: 338,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業の免許の有効期間は、5年である。",
+        answer: true,
+        explanation: "宅建業の免許の有効期間は5年で、更新が必要です。"
+    },
+    {
+        id: 339,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建士の事務禁止処分期間中は、宅建士証を返納しなければならない。",
+        answer: true,
+        explanation: "事務禁止処分を受けた宅建士は、速やかに宅建士証を交付を受けた都道府県知事に提出する必要があります。"
+    },
+    {
+        id: 340,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "一般媒介契約では、他の宅建業者に重ねて媒介を依頼することができる。",
+        answer: true,
+        explanation: "一般媒介契約は非専任のため、複数の宅建業者に重ねて依頼可能です（明示型・非明示型あり）。"
+    },
+    {
+        id: 341,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、従業者名簿を最終記載日から10年間保存しなければならない。",
+        answer: true,
+        explanation: "宅建業法により、従業者名簿は最終の記載をした日から10年間保存義務があります。"
+    },
+    {
+        id: 342,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "重要事項説明は、宅建士でなくても、従業者であれば行うことができる。",
+        answer: false,
+        explanation: "重要事項説明は、必ず宅建士が宅建士証を提示して行わなければなりません。"
+    },
+    {
+        id: 343,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者が自ら売主となる場合、買主から受領した手付金は解約手付と推定される。",
+        answer: false,
+        explanation: "宅建業者が自ら売主の場合、手付は解約手付と「みなされ」ます（推定ではなく、みなし規定）。"
+    },
+    {
+        id: 344,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "弁済業務保証金分担金は、営業保証金の5分の1の額である。",
+        answer: true,
+        explanation: "保証協会の弁済業務保証金分担金は、主たる事務所60万円、従たる事務所30万円で、営業保証金の5分の1です。"
+    },
+    {
+        id: 345,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、契約締結の勧誘に際し、利益を生ずることが確実であると誤解させる断定的判断を提供してはならない。",
+        answer: true,
+        explanation: "宅建業法第47条の2により、断定的判断の提供による勧誘は禁止されています。"
+    },
+    {
+        id: 346,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "35条書面と37条書面は、同一の書面として作成することができる。",
+        answer: false,
+        explanation: "35条書面（重要事項説明書）は契約前、37条書面（契約書面）は契約後に交付するため、同一書面にはできません。"
+    },
+    {
+        id: 347,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、業務上知り得た秘密を、正当な理由なく他に漏らしてはならない。",
+        answer: true,
+        explanation: "宅建業法第45条により、秘密を守る義務があり、宅建業者でなくなった後も同様です。"
+    },
+    {
+        id: 348,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "広告開始時期の制限は、建築確認を受けた後であれば広告可能である。",
+        answer: false,
+        explanation: "宅地造成・建物建築の工事完了前の広告は、開発許可・建築確認等を受けた後でなければできません。"
+    },
+    {
+        id: 349,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、指定流通機構に登録した物件について、登録証明書を依頼者に引き渡さなければならない。",
+        answer: true,
+        explanation: "専任媒介・専属専任媒介契約では、指定流通機構への登録後、登録証明書を依頼者に引き渡す義務があります。"
+    },
+    {
+        id: 350,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業の免許を受けていない者が、業として宅地建物の売買を行った場合、3年以下の懲役または300万円以下の罰金に処される。",
+        answer: true,
+        explanation: "無免許営業は、3年以下の懲役もしくは300万円以下の罰金、またはこれらの併科という重い罰則があります。"
+    },
+
+    // ========== 追加問題（50問）351-400 ==========
+    // 権利関係（13問）
+    {
+        id: 351,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "建物の区分所有者は、共用部分の持分を単独で処分することができる。",
+        answer: false,
+        explanation: "共用部分の持分は専有部分と分離して処分することはできません（区分所有法第15条）。"
+    },
+    {
+        id: 352,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "定期借地権の存続期間は、50年以上でなければならない。",
+        answer: true,
+        explanation: "一般定期借地権の存続期間は50年以上と定められています（借地借家法第22条）。"
+    },
+    {
+        id: 353,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "未成年者が婚姻をした場合、成年に達したものとみなされる。",
+        answer: true,
+        explanation: "民法第753条により、未成年者が婚姻をしたときは、成年に達したものとみなされます。"
+    },
+    {
+        id: 354,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "地役権は、要役地から分離して譲渡することができる。",
+        answer: false,
+        explanation: "地役権は要役地の所有権に従属し、要役地から分離して譲渡することはできません。"
+    },
+    {
+        id: 355,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "不法行為による損害賠償請求権の消滅時効は、損害及び加害者を知った時から3年である。",
+        answer: true,
+        explanation: "不法行為による損害賠償請求権は、被害者が損害及び加害者を知った時から3年で時効消滅します。"
+    },
+    {
+        id: 356,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "請負契約において、仕事の目的物に契約不適合があっても、注文者は契約を解除できない。",
+        answer: false,
+        explanation: "改正民法では、契約不適合があれば注文者は契約を解除できます（建物等でも可能）。"
+    },
+    {
+        id: 357,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "相続放棄は、相続開始前にすることができる。",
+        answer: false,
+        explanation: "相続放棄は相続開始後でなければできません。相続開始前の放棄は無効です。"
+    },
+    {
+        id: 358,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "不動産の売買契約において、買主は登記なくして第三者に対抗できる。",
+        answer: false,
+        explanation: "不動産物権変動を第三者に対抗するには登記が必要です（民法第177条）。"
+    },
+    {
+        id: 359,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "連帯保証人は、催告の抗弁権を有しない。",
+        answer: true,
+        explanation: "連帯保証人は催告の抗弁権・検索の抗弁権を有しません（民法第454条）。"
+    },
+    {
+        id: 360,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "即決和解は、簡易裁判所で行うことができる。",
+        answer: true,
+        explanation: "即決和解（訴え提起前の和解）は簡易裁判所に申し立てて行います。"
+    },
+    {
+        id: 361,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "賃貸借契約の更新拒絶には、正当事由が必要である。",
+        answer: true,
+        explanation: "借地借家法により、建物賃貸借の更新拒絶には正当事由が必要です。"
+    },
+    {
+        id: 362,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "根抵当権の元本は、確定前であれば自由に変更できる。",
+        answer: false,
+        explanation: "根抵当権の元本の変更には、後順位抵当権者等の承諾が必要な場合があります。"
+    },
+    {
+        id: 363,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "売買契約の買主は、売主の債務不履行があれば、直ちに契約を解除できる。",
+        answer: false,
+        explanation: "原則として相当期間を定めて履行を催告し、その期間内に履行がない場合に解除できます。"
+    },
+    
+    // 法令上の制限（12問）
+    {
+        id: 364,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "市街化調整区域では、原則として開発行為が禁止されている。",
+        answer: false,
+        explanation: "市街化調整区域では開発行為が制限されますが、許可を受ければ可能です。"
+    },
+    {
+        id: 365,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "容積率の制限は、前面道路の幅員によって制限される場合がある。",
+        answer: true,
+        explanation: "前面道路の幅員が12m未満の場合、道路幅員による容積率の制限を受けます。"
+    },
+    {
+        id: 366,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "第一種低層住居専用地域では、建築物の高さは10mまたは12mに制限される。",
+        answer: true,
+        explanation: "第一種低層住居専用地域では、都市計画で10mまたは12mの高さ制限が定められます。"
+    },
+    {
+        id: 367,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "農地を宅地に転用する場合、必ず農地法第5条の許可が必要である。",
+        answer: false,
+        explanation: "市街化区域内の農地転用は届出で足り、許可は不要です。"
+    },
+    {
+        id: 368,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "建築確認が必要な建築物は、確認済証の交付前に工事を着手できない。",
+        answer: true,
+        explanation: "建築確認が必要な建築物は、確認済証の交付を受けた後でなければ工事着手できません。"
+    },
+    {
+        id: 369,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "防火地域内では、すべての建築物を耐火建築物としなければならない。",
+        answer: false,
+        explanation: "防火地域内でも、延べ面積100㎡以下かつ2階建て以下なら準耐火建築物で可能です。"
+    },
+    {
+        id: 370,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "日影規制は、商業地域には適用されない。",
+        answer: true,
+        explanation: "日影規制は商業地域、工業地域、工業専用地域には適用されません。"
+    },
+    {
+        id: 371,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "土地区画整理事業の施行地区内では、建築行為が制限される。",
+        answer: true,
+        explanation: "土地区画整理事業の施行地区内では、都道府県知事の許可なく建築行為等ができません。"
+    },
+    {
+        id: 372,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "都市計画税は、市街化調整区域内の土地にも課税される。",
+        answer: false,
+        explanation: "都市計画税は原則として市街化区域内の土地・家屋に課税されます。"
+    },
+    {
+        id: 373,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "建築物の敷地は、建築基準法上の道路に2m以上接しなければならない。",
+        answer: true,
+        explanation: "建築基準法により、建築物の敷地は道路に2m以上接する必要があります（接道義務）。"
+    },
+    {
+        id: 374,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "特定街区内では、建築基準法の容積率・建ぺい率の規定が適用されない。",
+        answer: true,
+        explanation: "特定街区では、都市計画で定められた内容が優先され、一般の容積率等は適用されません。"
+    },
+    {
+        id: 375,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "宅地造成工事規制区域内で切土をする場合、すべて許可が必要である。",
+        answer: false,
+        explanation: "切土で高さ2m以下、面積500㎡以下の場合は許可不要です。"
+    },
+    
+    // 税・その他（12問）
+    {
+        id: 376,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "印紙税は、契約書を作成しただけで課税される。",
+        answer: true,
+        explanation: "印紙税は、課税文書を作成した時点で納税義務が生じます。"
+    },
+    {
+        id: 377,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "住宅取得等資金の贈与税の非課税限度額は、一律1,000万円である。",
+        answer: false,
+        explanation: "非課税限度額は、住宅の種類や取得時期により異なります（省エネ住宅等は優遇）。"
+    },
+    {
+        id: 378,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "小規模宅地等の特例により、居住用宅地は330㎡まで80％減額される。",
+        answer: true,
+        explanation: "相続税の小規模宅地等の特例で、特定居住用宅地等は330㎡まで80％評価減されます。"
+    },
+    {
+        id: 379,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "登録免許税の税率は、すべての不動産取引で同一である。",
+        answer: false,
+        explanation: "登録免許税の税率は、所有権移転の原因（売買、相続、贈与等）により異なります。"
+    },
+    {
+        id: 380,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "不動産取得税は、相続により不動産を取得した場合も課税される。",
+        answer: false,
+        explanation: "相続（包括遺贈含む）による不動産取得は、不動産取得税の非課税です。"
+    },
+    {
+        id: 381,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "取引事例比較法は、近隣の類似物件の取引事例を基に価格を査定する方法である。",
+        answer: true,
+        explanation: "取引事例比較法は、近隣の類似物件の取引事例を収集・比較して価格を求めます。"
+    },
+    {
+        id: 382,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "事業用資産の買換え特例は、個人のみが適用を受けられる。",
+        answer: false,
+        explanation: "事業用資産の買換え特例は、個人・法人ともに適用を受けることができます。"
+    },
+    {
+        id: 383,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "消費税の課税事業者は、前々年の課税売上高が1,000万円を超える事業者である。",
+        answer: true,
+        explanation: "基準期間（前々年）の課税売上高が1,000万円を超える場合、課税事業者となります。"
+    },
+    {
+        id: 384,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "固定資産税の標準税率は1.4％である。",
+        answer: true,
+        explanation: "固定資産税の標準税率は1.4％です（市町村により異なる場合あり）。"
+    },
+    {
+        id: 385,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "譲渡所得の計算において、取得費が不明な場合は譲渡価額の5％とすることができる。",
+        answer: true,
+        explanation: "取得費が不明な場合、譲渡価額の5％を概算取得費として計算できます。"
+    },
+    {
+        id: 386,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "都市計画税の制限税率は0.3％である。",
+        answer: true,
+        explanation: "都市計画税の制限税率（上限）は0.3％と定められています。"
+    },
+    {
+        id: 387,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "住宅ローン控除は、中古住宅の購入には適用されない。",
+        answer: false,
+        explanation: "一定の要件を満たす中古住宅の購入にも住宅ローン控除は適用されます。"
+    },
+    
+    // 宅建業法（13問）
+    {
+        id: 388,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、事務所以外の場所で専任の宅建士を置く必要はない。",
+        answer: true,
+        explanation: "専任の宅建士の設置義務があるのは事務所のみで、案内所等には不要です。"
+    },
+    {
+        id: 389,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建士証の有効期間は、5年である。",
+        answer: true,
+        explanation: "宅建士証の有効期間は5年で、更新には法定講習の受講が必要です。"
+    },
+    {
+        id: 390,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "重要事項説明書には、宅建士の記名が必要である。",
+        answer: true,
+        explanation: "重要事項説明書（35条書面）には、説明をする宅建士の記名が必要です。"
+    },
+    {
+        id: 391,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、自ら売主として、クーリング・オフによる解除を受けた場合、損害賠償請求ができる。",
+        answer: false,
+        explanation: "クーリング・オフによる解除の場合、宅建業者は損害賠償や違約金を請求できません。"
+    },
+    {
+        id: 392,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "媒介契約書面は、遅滞なく交付すればよい。",
+        answer: true,
+        explanation: "媒介契約書面は、媒介契約締結後遅滞なく交付する必要があります。"
+    },
+    {
+        id: 393,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、営業保証金を供託した後でなければ、事業を開始できない。",
+        answer: true,
+        explanation: "営業保証金の供託と供託届出後でなければ、宅建業の事業開始はできません。"
+    },
+    {
+        id: 394,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "専属専任媒介契約の有効期間は、3ヶ月を超えることができない。",
+        answer: true,
+        explanation: "専属専任媒介契約・専任媒介契約の有効期間は3ヶ月を超えることができません。"
+    },
+    {
+        id: 395,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者が自ら売主となる場合、買主が宅建業者であれば、手付金の額に制限はない。",
+        answer: true,
+        explanation: "8種制限は、買主が宅建業者の場合には適用されません。"
+    },
+    {
+        id: 396,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、報酬の額を自由に定めることができる。",
+        answer: false,
+        explanation: "宅建業者の報酬には国土交通大臣が定める上限があります。"
+    },
+    {
+        id: 397,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業の廃業届は、30日以内に提出しなければならない。",
+        answer: true,
+        explanation: "廃業等の届出は、その日から30日以内に行う必要があります。"
+    },
+    {
+        id: 398,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、事務所ごとに帳簿を備え、取引のつど記載しなければならない。",
+        answer: true,
+        explanation: "宅建業者は各事務所に帳簿を備え、取引のつど必要事項を記載する義務があります。"
+    },
+    {
+        id: 399,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者の監督処分は、国土交通大臣のみが行うことができる。",
+        answer: false,
+        explanation: "都道府県知事も、その免許を与えた宅建業者に対して監督処分を行えます。"
+    },
+    {
+        id: 400,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建士が宅建士証を亡失した場合、再交付を受けるまで重要事項説明を行うことができない。",
+        answer: true,
+        explanation: "重要事項説明には宅建士証の提示が必要なため、亡失した場合は再交付を受ける必要があります。"
+    },
+
+    // ========== 追加問題（50問）401-450 ==========
+    // 権利関係（13問）
+    {
+        id: 401,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "時効の援用は、時効期間満了前でも行うことができる。",
+        answer: false,
+        explanation: "時効の援用は、時効期間が満了した後でなければ行うことができません。"
+    },
+    {
+        id: 402,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "定期建物賃貸借契約は、公正証書による等書面によって契約しなければならない。",
+        answer: true,
+        explanation: "借地借家法第38条により、定期建物賃貸借契約は書面による契約が必要です。"
+    },
+    {
+        id: 403,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "債権譲渡の対抗要件は、確定日付のある証書による通知または承諾である。",
+        answer: true,
+        explanation: "債権譲渡を第三者に対抗するには、確定日付のある証書による通知・承諾が必要です。"
+    },
+    {
+        id: 404,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "建物買取請求権は、借地契約の更新がない場合にのみ行使できる。",
+        answer: false,
+        explanation: "建物買取請求権は、契約期間満了や合意解約など、借地権が消滅する場合に行使できます。"
+    },
+    {
+        id: 405,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "民法上の組合契約において、組合員は業務執行に関与する権利を放棄できる。",
+        answer: true,
+        explanation: "組合員は業務執行に関与する権利を放棄できますが、業務・財産状況の検査権は放棄できません。"
+    },
+    {
+        id: 406,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "共有物の管理行為は、共有者の持分価格の過半数で決定する。",
+        answer: true,
+        explanation: "民法第252条により、共有物の管理に関する事項は持分価格の過半数で決定します。"
+    },
+    {
+        id: 407,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "親権者は、子の財産を自由に処分することができる。",
+        answer: false,
+        explanation: "親権者は子の財産を管理する権限はありますが、子の利益のために行使する必要があります。"
+    },
+    {
+        id: 408,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "仮登記は、本登記と同じ対抗力を有する。",
+        answer: false,
+        explanation: "仮登記は順位保全効はありますが、本登記のような対抗力はありません。"
+    },
+    {
+        id: 409,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "使用貸借契約は、借主の死亡により終了する。",
+        answer: true,
+        explanation: "使用貸借は借主の死亡により終了し、相続の対象となりません。"
+    },
+    {
+        id: 410,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "错誤による意思表示は、重大な過失がある場合でも取り消すことができる。",
+        answer: false,
+        explanation: "表意者に重大な過失がある場合、原則として错誤による取消しはできません。"
+    },
+    {
+        id: 411,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "譲渡担保において、債務者は受戻権を有する。",
+        answer: true,
+        explanation: "譲渡担保の設定者（債務者）は、債務を弁済して目的物を受け戻す権利があります。"
+    },
+    {
+        id: 412,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "隣地使用権は、必要な範囲で隣地を使用できる権利である。",
+        answer: true,
+        explanation: "民法第209条により、境界付近での建築・修繕等に必要な範囲で隣地使用が認められます。"
+    },
+    {
+        id: 413,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "特別養子縁組は、養子が6歳未満でなければ成立しない。",
+        answer: false,
+        explanation: "原則6歳未満ですが、6歳に達する前から引き続き養親となる者に監護されている場合は8歳未満まで可能です。"
+    },
+    
+    // 法令上の制限（12問）
+    {
+        id: 414,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "非線引き都市計画区域では、3,000㎡未満の開発行為は許可不要である。",
+        answer: true,
+        explanation: "非線引き都市計画区域では、3,000㎡未満の開発行為は開発許可不要です。"
+    },
+    {
+        id: 415,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "風致地区内での建築には、都道府県知事の許可が必要である。",
+        answer: false,
+        explanation: "風致地区内での建築行為は、市町村長の許可が必要です（政令市等は市長）。"
+    },
+    {
+        id: 416,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "準都市計画区域では、用途地域を定めることができる。",
+        answer: true,
+        explanation: "準都市計画区域でも、用途地域を定めることができます。"
+    },
+    {
+        id: 417,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "建築基準法の道路は、幅員4m以上が原則である。",
+        answer: true,
+        explanation: "建築基準法第42条により、道路は原則として幅員4m以上必要です。"
+    },
+    {
+        id: 418,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "土地収用法による事業認定は、国土交通大臣のみが行う。",
+        answer: false,
+        explanation: "事業の種類・規模により、国土交通大臣または都道府県知事が事業認定を行います。"
+    },
+    {
+        id: 419,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "景観地区内では、建築物の形態意匠の制限を受ける。",
+        answer: true,
+        explanation: "景観地区では、建築物の形態意匠について市町村長の認定が必要です。"
+    },
+    {
+        id: 420,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "生産緑地地区の指定は、500㎡以上の農地等が対象である。",
+        answer: true,
+        explanation: "生産緑地地区は、500㎡以上の農地等が指定対象となります。"
+    },
+    {
+        id: 421,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "伝統的建造物群保存地区では、すべての建築行為が禁止される。",
+        answer: false,
+        explanation: "伝統的建造物群保存地区では、現状変更に市町村教育委員会の許可が必要ですが、全面禁止ではありません。"
+    },
+    {
+        id: 422,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "総合設計制度により、容積率の割増しを受けることができる。",
+        answer: true,
+        explanation: "一定の空地を設ける総合設計では、特定行政庁の許可により容積率の割増しが可能です。"
+    },
+    {
+        id: 423,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "市街地再開発事業は、第一種と第二種がある。",
+        answer: true,
+        explanation: "市街地再開発事業には、権利変換方式の第一種と管理処分方式の第二種があります。"
+    },
+    {
+        id: 424,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "建築物の用途変更は、すべて建築確認が必要である。",
+        answer: false,
+        explanation: "類似の用途間の変更や、200㎡以下の特殊建築物への用途変更は建築確認不要です。"
+    },
+    {
+        id: 425,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "開発許可を受けた土地は、工事完了公告前は建築できない。",
+        answer: true,
+        explanation: "開発許可を受けた土地では、原則として工事完了公告後でなければ建築できません。"
+    },
+    
+    // 税・その他（12問）
+    {
+        id: 426,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "配偶者居住権は、相続税の課税対象となる。",
+        answer: true,
+        explanation: "配偶者居住権も財産的価値があるため、相続税の課税対象となります。"
+    },
+    {
+        id: 427,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "不動産の譲渡所得は、分離課税である。",
+        answer: true,
+        explanation: "土地建物の譲渡所得は、他の所得と分離して課税されます（分離課税）。"
+    },
+    {
+        id: 428,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "空き家の3,000万円特別控除は、相続から3年以内に譲渡する必要がある。",
+        answer: false,
+        explanation: "相続開始から3年を経過する日の属する年の12月31日までに譲渡する必要があります。"
+    },
+    {
+        id: 429,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "原価法は、再調達原価から減価修正を行って価格を求める方法である。",
+        answer: true,
+        explanation: "原価法は、再調達原価を求め、減価修正を行って対象不動産の価格を求める手法です。"
+    },
+    {
+        id: 430,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "相続時精算課税制度の適用を受けると、暦年課税に戻すことはできない。",
+        answer: true,
+        explanation: "相続時精算課税制度を選択すると、その贈与者からの贈与について暦年課税には戻せません。"
+    },
+    {
+        id: 431,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "法人の土地譲渡益には、追加課税される場合がある。",
+        answer: true,
+        explanation: "一定期間、法人の土地譲渡益に対して追加課税（重課）される制度があります。"
+    },
+    {
+        id: 432,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "住宅用地の固定資産税は、200㎡まで6分の1に軽減される。",
+        answer: true,
+        explanation: "小規模住宅用地（200㎡以下）の固定資産税の課税標準は6分の1に軽減されます。"
+    },
+    {
+        id: 433,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "買換え特例と3,000万円特別控除は、併用できる。",
+        answer: false,
+        explanation: "特定居住用財産の買換え特例と3,000万円特別控除は併用できません。"
+    },
+    {
+        id: 434,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "不動産鑑定評価基準では、価格時点を定める必要がある。",
+        answer: true,
+        explanation: "不動産鑑定評価では、価格時点（いつの時点の価格か）を明確にする必要があります。"
+    },
+    {
+        id: 435,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "登録免許税の軽減措置は、新築住宅にのみ適用される。",
+        answer: false,
+        explanation: "一定要件を満たす中古住宅の取得にも登録免許税の軽減措置があります。"
+    },
+    {
+        id: 436,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "相続税の延納は、最閇20年まで可能である。",
+        answer: true,
+        explanation: "不動産等の割合が高い場合、相続税の延納は最閇20年まで認められます。"
+    },
+    {
+        id: 437,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "特定の事業用資産の買換え特例では、圧縮記帳ができる。",
+        answer: true,
+        explanation: "法人が特定の事業用資産の買換えを行った場合、圧縮記帳により課税繰延べが可能です。"
+    },
+    
+    // 宅建業法（13問）
+    {
+        id: 438,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、クーリング・オフについて書面で告知しなければならない。",
+        answer: true,
+        explanation: "宅建業者が自ら売主の場合、クーリング・オフについて書面で告知する義務があります。"
+    },
+    {
+        id: 439,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "専任媒介契約では、2週間に1回以上業務処理状況を報告する。",
+        answer: true,
+        explanation: "専任媒介契約では、2週間に1回以上の頻度で依頼者に業務処理状況を報告します。"
+    },
+    {
+        id: 440,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者の事務所には、必ず専任の宅建士を置かなければならない。",
+        answer: true,
+        explanation: "事務所には、業務に従事する者5人に1人以上の割合で専任の宅建士が必要です。"
+    },
+    {
+        id: 441,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "手付金等の保全措置は、売買代金の5％を超える場合に必要である。",
+        answer: false,
+        explanation: "未完成物件は5％超かつ1,000万円超、完成物件は10％超かつ1,000万円超で保全措置が必要です。"
+    },
+    {
+        id: 442,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建士の登録は、試験に合格すれば自動的に行われる。",
+        answer: false,
+        explanation: "宅建士の登録には、2年以上の実務経験または登録実務講習の修了が必要です。"
+    },
+    {
+        id: 443,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、両手取引の場合、双方から報酬を受領できる。",
+        answer: true,
+        explanation: "売主・買主双方の媒介を行う場合、それぞれから報酬を受領できます（合計は上限あり）。"
+    },
+    {
+        id: 444,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業の免許申請には、営業保証金の供託証明が必要である。",
+        answer: false,
+        explanation: "免許申請時には営業保証金の供託は不要で、免許取得後に供託します。"
+    },
+    {
+        id: 445,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "重要事項説明は、契約成立後でも差し支えない。",
+        answer: false,
+        explanation: "重要事項説明は、契約成立前に行わなければなりません。"
+    },
+    {
+        id: 446,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者名簿は、一般の閲覧に供される。",
+        answer: true,
+        explanation: "宅建業者名簿は、国土交通省・都道府県で一般の閲覧に供されます。"
+    },
+    {
+        id: 447,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "瑕疵担保責任の特約は、買主に不利なものも有効である。",
+        answer: false,
+        explanation: "宅建業者が売主の場合、引渡しから2年以上とする特約以外の買主に不利な特約は無効です。"
+    },
+    {
+        id: 448,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、誇大広告等の禁止規定に違反すると業務停止処分を受ける。",
+        answer: true,
+        explanation: "誇大広告等の禁止規定違反は、業務停止処分等の対象となります。"
+    },
+    {
+        id: 449,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建士証の更新には、法定講習の受講が必要である。",
+        answer: true,
+        explanation: "宅建士証の更新（有効期間5年）には、法定講習の受講が必要です。"
+    },
+    {
+        id: 450,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "保証協会に加入した宅建業者は、営業保証金を供託する必要がない。",
+        answer: true,
+        explanation: "保証協会に加入し弁済業務保証金分担金を納付すれば、営業保証金の供託は不要です。"
+    },
+
+    // ========== 最終追加問題（50問）451-500 ==========
+    // 権利関係（13問）
+    {
+        id: 451,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "永小作権は、物権である。",
+        answer: true,
+        explanation: "永小作権は、他人の土地において耕作または牧畜をする物権です（民法第270条）。"
+    },
+    {
+        id: 452,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "不在者の財産管理人は、家庭裁判所の許可なく不動産を売却できる。",
+        answer: false,
+        explanation: "不在者の財産管理人が不動産を売却するには、家庭裁判所の許可が必要です。"
+    },
+    {
+        id: 453,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "抵当権の被担保債権が時効消滅すると、抵当権も消滅する。",
+        answer: true,
+        explanation: "抵当権は付従性があるため、被担保債権が時効消滅すれば抵当権も消滅します。"
+    },
+    {
+        id: 454,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "事業用定期借地権の存続期間は、10年以上50年未満である。",
+        answer: true,
+        explanation: "事業用定期借地権の存続期間は、10年以上50年未満と定められています。"
+    },
+    {
+        id: 455,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "同時履行の抗弁権は、双務契約でなくても主張できる。",
+        answer: false,
+        explanation: "同時履行の抗弁権は、双務契約において相手方が債務を履行するまで自己の債務の履行を拒める権利です。"
+    },
+    {
+        id: 456,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "遺産分割協議は、相続人全員の合意が必要である。",
+        answer: true,
+        explanation: "遺産分割協議には、相続人全員の参加と合意が必要です。"
+    },
+    {
+        id: 457,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "定期借家契約では、中途解約権を特約で排除できる。",
+        answer: true,
+        explanation: "定期借家契約では、法定の中途解約権（200㎡未満の居住用）以外は、特約で中途解約権を排除できます。"
+    },
+    {
+        id: 458,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "善意の第三者に対しては、詐欺による取消しを対抗できない。",
+        answer: true,
+        explanation: "民法第96条第3項により、詐欺による取消しは善意無過失の第三者に対抗できません。"
+    },
+    {
+        id: 459,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "相殺は、相手方の承諾なくして行うことができる。",
+        answer: true,
+        explanation: "相殺は単独行為であり、相手方の承諾なく一方的な意思表示で行えます。"
+    },
+    {
+        id: 460,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "準共有の場合、各共有者は自由に持分を処分できる。",
+        answer: true,
+        explanation: "準共有においても、各共有者は自己の持分を自由に処分できます。"
+    },
+    {
+        id: 461,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "後見人は、被後見人の居住用不動産を自由に処分できる。",
+        answer: false,
+        explanation: "後見人が被後見人の居住用不動産を処分するには、家庭裁判所の許可が必要です。"
+    },
+    {
+        id: 462,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "期限の利益は、債務者のためにあるものと推定される。",
+        answer: true,
+        explanation: "民法第136条により、期限の利益は債務者のためにあるものと推定されます。"
+    },
+    {
+        id: 463,
+        category: "rights",
+        categoryName: "権利関係",
+        question: "遺留分侵害額請求権の行使期間は、相続開始から1年である。",
+        answer: false,
+        explanation: "遺留分侵害額請求権は、相続開始及び遺留分侵害を知った時から1年、相続開始から10年で時効消滅します。"
+    },
+    
+    // 法令上の制限（12問）
+    {
+        id: 464,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "都市計画区域外では、建築確認が不要である。",
+        answer: false,
+        explanation: "都市計画区域外でも、一定規模以上の建築物等は建築確認が必要です。"
+    },
+    {
+        id: 465,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "第二種低層住居専用地域では、3階建ての住宅が建築できる。",
+        answer: true,
+        explanation: "第二種低層住居専用地域でも、高さ制限（10mまたは12m）内であれば3階建て住宅の建築が可能です。"
+    },
+    {
+        id: 466,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "農業振興地域内の農用地区域では、原則として農地転用ができない。",
+        answer: true,
+        explanation: "農業振興地域内の農用地区域（青地）では、原則として農地転用は認められません。"
+    },
+    {
+        id: 467,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "建築物の容積率は、敷地が2以上の用途地域にまたがる場合、加重平均で算定する。",
+        answer: true,
+        explanation: "敷地が2以上の用途地域にまたがる場合、容積率は面積による加重平均で算定します。"
+    },
+    {
+        id: 468,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "仮換地の指定を受けた土地は、従前の土地について使用収益できる。",
+        answer: false,
+        explanation: "仮換地の指定により、従前の土地の使用収益権は原則として停止されます。"
+    },
+    {
+        id: 469,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "準防火地域では、すべての建築物を準耐火建築物としなければならない。",
+        answer: false,
+        explanation: "準防火地域でも、一定規模以下の建築物は準耐火建築物としなくてもよい場合があります。"
+    },
+    {
+        id: 470,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "地区計画は、市町村が都市計画として定める。",
+        answer: true,
+        explanation: "地区計画は、市町村が定める都市計画です。"
+    },
+    {
+        id: 471,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "宅地造成工事規制区域は、都道府県知事が指定する。",
+        answer: true,
+        explanation: "宅地造成工事規制区域は、都道府県知事（政令市等は市長）が指定します。"
+    },
+    {
+        id: 472,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "建築基準法上の道路に2m接していれば、どんな敷地でも建築可能である。",
+        answer: false,
+        explanation: "接道義務を満たしても、用途地域や建ぺい率・容積率等の他の制限も満たす必要があります。"
+    },
+    {
+        id: 473,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "開発行為の許可権者は、都道府県知事である。",
+        answer: true,
+        explanation: "開発行為の許可権者は都道府県知事です（政令市・中核市等は市長）。"
+    },
+    {
+        id: 474,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "高度利用地区では、建築物の容積率の最低限度が定められる。",
+        answer: true,
+        explanation: "高度利用地区では、容積率の最高限度・最低限度、建ぺい率の最高限度等が定められます。"
+    },
+    {
+        id: 475,
+        category: "law",
+        categoryName: "法令上の制限",
+        question: "国土利用計画法の事後届出は、契約締結後14日以内に行う。",
+        answer: false,
+        explanation: "国土利用計画法の事後届出は、契約締結後2週間以内に行う必要があります。"
+    },
+    
+    // 税・その他（12問）
+    {
+        id: 476,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "居住用財産の譲渡所得は、所有期間に関わらず軽減税率が適用される。",
+        answer: false,
+        explanation: "居住用財産譲渡所得の軽減税率は、所有期間10年超の場合に適用されます。"
+    },
+    {
+        id: 477,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "個人が土地を譲渡した場合、短期譲渡所得の税率は39％である。",
+        answer: true,
+        explanation: "短期譲渡所得（所有期間5年以下）の税率は、所得税30％、住民税9％の合計39％です。"
+    },
+    {
+        id: 478,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "不動産鑑定評価の手法には、原価法、取引事例比較法、収益還元法がある。",
+        answer: true,
+        explanation: "不動産鑑定評価の三手法は、原価法、取引事例比較法、収益還元法です。"
+    },
+    {
+        id: 479,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "印紙税は、契約金額が1万円未満の場合は非課税である。",
+        answer: true,
+        explanation: "不動産売買契約書等の印紙税は、記載金額1万円未満は非課税です。"
+    },
+    {
+        id: 480,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "相続税の基礎控除は、3,000万円＋500万円×法定相続人数である。",
+        answer: false,
+        explanation: "相続税の基礎控除は、3,000万円＋600万円×法定相続人数です。"
+    },
+    {
+        id: 481,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "新築住宅の不動産取得税は、1,200万円の控除がある。",
+        answer: true,
+        explanation: "一定要件を満たす新築住宅の不動産取得税は、1,200万円（長期優良住宅は1,300万円）の控除があります。"
+    },
+    {
+        id: 482,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "住宅ローン控除の対象となる借入金の限度額は、一律4,000万円である。",
+        answer: false,
+        explanation: "住宅ローン控除の借入限度額は、住宅の種類や取得時期により異なります。"
+    },
+    {
+        id: 483,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "公示価格は、毎年1月1日時点の価格である。",
+        answer: true,
+        explanation: "地価公示の公示価格は、毎年1月1日時点の標準地の価格です。"
+    },
+    {
+        id: 484,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "配偶者に対する相続税額の軽減は、1億6,000万円まで非課税である。",
+        answer: false,
+        explanation: "配偶者の税額軽減は、1億6,000万円または法定相続分のいずれか多い金額まで非課税です。"
+    },
+    {
+        id: 485,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "譲渡所得の概算取得費は、譲渡収入金額の5％である。",
+        answer: true,
+        explanation: "取得費が不明な場合、譲渡収入金額の5％を概算取得費とすることができます。"
+    },
+    {
+        id: 486,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "贈与税の配偶者控除は、婚姻期間20年以上で適用される。",
+        answer: true,
+        explanation: "居住用不動産の贈与税の配偶者控除（2,000万円）は、婚姻期間20年以上が要件です。"
+    },
+    {
+        id: 487,
+        category: "tax",
+        categoryName: "税・その他",
+        question: "建物の標準的な耐用年数は、木造住宅で22年である。",
+        answer: true,
+        explanation: "減価償却資産の耐用年数で、木造住宅用建物は22年と定められています。"
+    },
+    
+    // 宅建業法（13問）
+    {
+        id: 488,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、免許の更新を受けなかった場合、その免許は失効する。",
+        answer: true,
+        explanation: "宅建業免許は5年ごとの更新が必要で、更新しなければ失効します。"
+    },
+    {
+        id: 489,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建士は、重要事項説明の際、宅建士証を提示しなければならない。",
+        answer: true,
+        explanation: "重要事項説明時には、必ず宅建士証を提示する義務があります。"
+    },
+    {
+        id: 490,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、自ら売主となる場合、買主に不利な特約をすべて無効にできる。",
+        answer: false,
+        explanation: "8種制限により買主に不利な特約は無効ですが、法令に違反しない範囲の特約は有効です。"
+    },
+    {
+        id: 491,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "一般媒介契約の有効期間は、法律上の制限がない。",
+        answer: true,
+        explanation: "一般媒介契約には法定の有効期間の制限はありません（行政指導では3ヶ月以内）。"
+    },
+    {
+        id: 492,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、契約締結時期の制限に違反した場合、罰則を受ける。",
+        answer: true,
+        explanation: "契約締結時期の制限（手付金等の保全措置前の契約締結禁止等）違反には罰則があります。"
+    },
+    {
+        id: 493,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建士の事務禁止処分は、最長1年間である。",
+        answer: true,
+        explanation: "宅建士に対する事務禁止処分の期間は、1年以内です。"
+    },
+    {
+        id: 494,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "専属専任媒介契約では、依頼者は他の宅建業者に重ねて依頼できない。",
+        answer: true,
+        explanation: "専属専任媒介契約では、他の宅建業者への依頼も自己発見取引も禁止されます。"
+    },
+    {
+        id: 495,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者の帳簿は、各事業年度末に閉鎖し、5年間保存する。",
+        answer: true,
+        explanation: "宅建業者の帳簿は、各事業年度末閉鎖後5年間（新規は10年間）保存義務があります。"
+    },
+    {
+        id: 496,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、広告に免許証番号を必ず記載しなければならない。",
+        answer: false,
+        explanation: "広告への免許証番号の記載は義務ではありませんが、業者名・所在地等は必要です。"
+    },
+    {
+        id: 497,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者が受領できる報酬の額は、国土交通大臣が定める。",
+        answer: true,
+        explanation: "宅建業者の報酬額の上限は、国土交通大臣が定めています。"
+    },
+    {
+        id: 498,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業者は、守秘義務違反をした場合、刑事罰を受ける。",
+        answer: false,
+        explanation: "宅建業法の守秘義務（第45条）違反には、直接的な刑事罰の規定はありません。"
+    },
+    {
+        id: 499,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "供託所等の説明は、重要事項説明の必要的記載事項である。",
+        answer: true,
+        explanation: "供託所等に関する説明は、35条書面（重要事項説明書）の必要的記載事項です。"
+    },
+    {
+        id: 500,
+        category: "business",
+        categoryName: "宅建業法",
+        question: "宅建業の免許は、個人から法人成りした場合、承継される。",
+        answer: false,
+        explanation: "個人から法人成りした場合、宅建業免許は承継されず、新たに法人として免許申請が必要です。"
     }
 ];

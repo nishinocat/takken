@@ -1,0 +1,31 @@
+# デバッグ・テスト用ファイル
+debug*.html
+test*.html
+combo-test*.html
+*addon*.js
+
+# ログファイル
+*.log
+*.logs
+
+# 一時ファイル
+.DS_Store
+Thumbs.db
+
+# エディタ設定
+.vscode/
+.idea/
+
+# ビルド出力
+dist/
+build/
+
+# 依存関係
+node_modules/
+
+# 環境設定
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

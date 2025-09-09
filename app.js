@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initPWA(); // PWA機能の初期化
     
     // ストリークの初期状態を確認
-    console.log('App initialized. Initial streak:', app.streak);
     
     // レベルペナルティの通知があれば表示
     const penaltyMessage = localStorage.getItem('takken_level_penalty');
@@ -202,12 +201,10 @@ function loadData() {
         const saved = JSON.parse(streakData);
         app.streak = saved.streak || 0;
         app.maxStreak = saved.maxStreak || 0;
-        console.log('Loaded streak from storage:', app.streak, 'max:', app.maxStreak);
     } else {
         // 初回起動時
         app.streak = 0;
         app.maxStreak = 0;
-        console.log('No streak data found, initializing to 0');
     }
     if (totalTime) {
         const savedTime = parseInt(totalTime);
@@ -311,7 +308,6 @@ function showStartScreen() {
 function startMode(mode) {
     app.currentMode = mode;
     // ストリークは継続する（リセットしない）
-    console.log('Starting mode:', mode, 'Current streak:', app.streak);
     
     // スタート画面を非表示
     document.getElementById('startScreen').classList.add('hidden');
@@ -347,7 +343,6 @@ function startMode(mode) {
 function showQuestion() {
     // 復習モードで問題がない場合の処理
     if (app.currentMode === 'review' && app.reviewQuestions.length === 0) {
-        console.log('復習リストが空になりました。復習完了！');
         alert('🎉 復習完了！全ての問題をマスターしました！');
         // 問題画面を非表示
         document.getElementById('questionArea').classList.add('hidden');
@@ -379,15 +374,12 @@ function showQuestion() {
         question = app.categoryQuestions[Math.floor(Math.random() * app.categoryQuestions.length)];
     } else if (app.currentMode === 'review' && app.reviewQuestions.length > 0) {
         // 復習リストからランダムに選択（同じ問題の繰り返しを避ける）
-        console.log('復習モード - 現在の復習リスト:', app.reviewQuestions);
         const randomIndex = Math.floor(Math.random() * app.reviewQuestions.length);
         const reviewId = app.reviewQuestions[randomIndex];
-        console.log('選択された復習問題ID:', reviewId, 'インデックス:', randomIndex);
         question = questions.find(q => q.id === reviewId);
         
         // 問題が見つからない場合は復習リストから削除して再選択
         if (!question) {
-            console.log('問題が見つからない。削除して再選択:', reviewId);
             app.reviewQuestions.splice(randomIndex, 1);
             saveData();
             showQuestion(); // 再帰的に次の問題を選択
@@ -474,8 +466,6 @@ function checkAnswer(userAnswer) {
         // 復習リストに追加（重複チェック）
         if (!app.reviewQuestions.includes(app.currentQuestion.id)) {
             app.reviewQuestions.push(app.currentQuestion.id);
-            console.log('復習リストに追加:', app.currentQuestion.id);
-            console.log('現在の復習リスト:', app.reviewQuestions);
         }
     }
     
@@ -535,13 +525,9 @@ function checkAnswer(userAnswer) {
     
     // 復習モードの場合、正解したら復習リストから削除
     if (app.currentMode === 'review' && isCorrect) {
-        console.log('復習リスト削除前:', app.reviewQuestions);
-        console.log('削除する問題ID:', app.currentQuestion.id);
         const beforeLength = app.reviewQuestions.length;
         app.reviewQuestions = app.reviewQuestions.filter(id => id !== app.currentQuestion.id);
         const afterLength = app.reviewQuestions.length;
-        console.log('復習リスト削除後:', app.reviewQuestions);
-        console.log(`削除結果: ${beforeLength} → ${afterLength}`);
         updateReviewArea();
         saveData(); // 復習リストの変更を保存
     }
@@ -570,7 +556,6 @@ function startReview() {
         return;
     }
     
-    console.log('復習モード開始:', app.reviewQuestions); // デバッグ用
     app.currentMode = 'review';
     document.getElementById('reviewArea').classList.add('hidden');
     document.getElementById('questionArea').classList.remove('hidden');
@@ -676,7 +661,6 @@ function updateExamCountdown() {
     
     const daysLeftElement = document.getElementById('daysLeft');
     if (daysLeftElement) {
-        console.log('Days calculation:', { examDate, today, diffTime, diffDays }); // デバッグ用
         if (diffDays > 0) {
             daysLeftElement.textContent = diffDays;
             daysLeftElement.style.color = diffDays <= 30 ? '#ff3b30' : '#fff';
@@ -995,7 +979,6 @@ function updateMobileStatus() {
         mobileMastery.appendChild(item);
     });
     
-    console.log('Mobile mastery updated:', app.stats.categories); // デバッグ用
 }
 
 // PWA（Progressive Web App）機能
@@ -1049,7 +1032,6 @@ function initPWA() {
     
     // アプリがインストールされた時の処理
     window.addEventListener('appinstalled', (e) => {
-        console.log('PWAがインストールされました');
         if (installBtn) {
             installBtn.innerHTML = '✅';
             installBtn.title = '既にインストール済み';
@@ -1086,9 +1068,7 @@ function installApp() {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
-                console.log('ユーザーがインストールを受け入れました');
             } else {
-                console.log('ユーザーがインストールを拒否しました');
             }
             deferredPrompt = null;
         });
@@ -1123,17 +1103,14 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
             .then((registration) => {
-                console.log('Service Worker登録成功:', registration.scope);
             })
             .catch((error) => {
-                console.log('Service Worker登録失敗:', error);
             });
     });
 }
 
 // 統計情報ポップアップ表示
 function showStatInfo(type) {
-    console.log('showStatInfo called with type:', type);
     
     const popup = document.getElementById('statPopup');
     const title = document.getElementById('popupTitle');
