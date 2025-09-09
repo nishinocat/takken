@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMBO直接テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .result-box {
+            padding: 20px;
+            background: linear-gradient(135deg, #34c759, #30d158);
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>COMBO表示テスト（本番と同じコード）</h1>
+    
+    <p>現在のstreak: <span id="streakCount">0</span></p>
+    
+    <button onclick="testCorrect()">正解をシミュレート</button>
+    <button onclick="testIncorrect()">不正解をシミュレート</button>
+    <button onclick="resetStreak()">リセット</button>
+    
+    <div id="result" class="result-box"></div>
+    
+    <h2>コンソールログ：</h2>
+    <pre id="log" style="background: #f0f0f0; padding: 10px; height: 200px; overflow: auto;"></pre>
+    
+    <script>
+        // 本番と同じ変数
+        let streak = 0;
+        let maxStreak = 0;
+        
+        function addLog(msg) {
+            const logEl = document.getElementById('log');
+            logEl.textContent += msg + '\n';
+            console.log(msg);
+        }
+        
+        function testCorrect() {
+            // 本番と同じロジック
+            streak++;
+            document.getElementById('streakCount').textContent = streak;
+            
+            addLog(`=== COMBO DEBUG ===`);
+            addLog(`Before: streak was ${streak - 1}`);
+            addLog(`After: streak is now ${streak}`);
+            addLog(`Will show COMBO? ${streak > 1}`);
+            
+            if (streak > maxStreak) {
+                maxStreak = streak;
+            }
+            
+            // ポイント計算（本番と同じ）
+            let points = 1;
+            if (streak > 1) {
+                const effectiveStreak = Math.min(streak, 4);
+                points = Math.pow(2, effectiveStreak - 1);
+            }
+            
+            // 表示（本番と同じ）
+            const resultDiv = document.getElementById('result');
+            const displayStreak = Math.min(streak, 99);
+            
+            if (streak > 1) {
+                resultDiv.innerHTML = `
+                    <div style="display: block !important; font-size: 1em !important; margin-bottom: 5px !important; color: white !important;">🎉 正解！</div>
+                    <div style="display: block !important; font-size: 1.8em !important; color: #ff6b35 !important; font-weight: bold !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important; line-height: 1.2 !important;">
+                        🔥 ${displayStreak} COMBO!!
+                    </div>
+                    <div style="display: block !important; font-size: 1.1em !important; margin-top: 5px !important; color: white !important;">+${points}ポイント獲得！</div>
+                `;
+                addLog(`COMBO displayed: ${displayStreak} COMBO!! (+${points}ポイント)`);
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="display: block !important; font-size: 1.1em !important; color: white !important;">🎉 正解！</div>
+                    <div style="display: block !important; font-size: 1em !important; margin-top: 5px !important; color: white !important;">+1ポイント獲得</div>
+                `;
+                addLog(`通常表示: +1ポイント`);
+            }
+        }
+        
+        function testIncorrect() {
+            streak = 0;
+            document.getElementById('streakCount').textContent = streak;
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<div>❌ 不正解</div>`;
+            resultDiv.style.background = 'linear-gradient(135deg, #ff3b30, #ff453a)';
+            
+            addLog('不正解 - ストリークリセット');
+        }
+        
+        function resetStreak() {
+            streak = 0;
+            maxStreak = 0;
+            document.getElementById('streakCount').textContent = streak;
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('log').textContent = '';
+            addLog('リセット完了');
+        }
+        
+        // 初期化
+        addLog('テスト開始 - 「正解をシミュレート」を2回クリックしてCOMBOを確認');
+    </script>
+</body>
+</html>

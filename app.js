@@ -17,7 +17,9 @@ const app = {
         TOTAL_TIME: 'takken_total_time',
         DAILY_STATS: 'takken_daily_stats',
         ACHIEVEMENTS: 'takken_achievements',
-        USER_LEVEL: 'takken_user_level'
+        USER_LEVEL: 'takken_user_level',
+        STREAK_DATA: 'takken_streak_data',
+        LAST_ACCESS: 'takken_last_access'
     },
     
     // 学習履歴
@@ -39,7 +41,7 @@ const app = {
         questionsAnswered: 0,
         correctAnswers: 0
     },
-    streak: 0,
+    streak: 0,  // 初期値は0だが、loadData()で上書きされる
     maxStreak: 0,
     achievements: {
         firstQuestion: false,
@@ -52,6 +54,13 @@ const app = {
 
 // 初期化
 document.addEventListener('DOMContentLoaded', () => {
+    // グローバル関数を先に公開
+    window.showStartScreen = showStartScreen;
+    window.showStatInfo = showStatInfo;
+    window.closeStatPopup = closeStatPopup;
+    window.resetAllData = resetAllData;
+    window.confirmDataReset = confirmDataReset;
+    
     loadData();
     initEventListeners();
     updateStats();
@@ -60,6 +69,26 @@ document.addEventListener('DOMContentLoaded', () => {
     showAnalysisSidebar();
     updateGamification();
     initPWA(); // PWA機能の初期化
+    
+    // ストリークの初期状態を確認
+    console.log('App initialized. Initial streak:', app.streak);
+    
+    // レベルペナルティの通知があれば表示
+    const penaltyMessage = localStorage.getItem('takken_level_penalty');
+    if (penaltyMessage) {
+        setTimeout(() => {
+            alert(`⚠️ ${penaltyMessage}\n\n毎日1問でも解いて学習を継続しましょう！`);
+            localStorage.removeItem('takken_level_penalty');
+        }, 1000);
+    }
+    
+    // 初回起動時にポイントシステムの説明を表示
+    const hasSeenPointInfo = localStorage.getItem('takken_point_info_seen');
+    if (!hasSeenPointInfo) {
+        showPointSystemInfo();
+        localStorage.setItem('takken_point_info_seen', 'true');
+    }
+    
     // スタート画面を表示
     showStartScreen();
     
@@ -79,21 +108,95 @@ function loadData() {
     const dailyStats = localStorage.getItem(app.STORAGE_KEYS.DAILY_STATS);
     const achievements = localStorage.getItem(app.STORAGE_KEYS.ACHIEVEMENTS);
     const userLevel = localStorage.getItem(app.STORAGE_KEYS.USER_LEVEL);
+    const streakData = localStorage.getItem(app.STORAGE_KEYS.STREAK_DATA);
     
     if (history) app.history = JSON.parse(history);
     if (stats) app.stats = JSON.parse(stats);
     if (review) app.reviewQuestions = JSON.parse(review);
-    if (dailyStats) {
-        const saved = JSON.parse(dailyStats);
-        if (saved.date === new Date().toDateString()) {
-            app.dailyStats = saved;
+    
+    // 最後のアクセス日をチェック
+    const lastAccess = localStorage.getItem(app.STORAGE_KEYS.LAST_ACCESS);
+    const today = new Date().toDateString();
+    
+    // 日次統計とレベルペナルティのチェック
+    if (lastAccess && lastAccess !== today) {
+        // 日付が変わった
+        const lastAccessDate = new Date(lastAccess);
+        const todayDate = new Date(today);
+        const diffDays = Math.floor((todayDate - lastAccessDate) / (1000 * 60 * 60 * 24));
+        
+        // 前日の学習記録をチェック
+        if (dailyStats) {
+            const saved = JSON.parse(dailyStats);
+            
+            // 1日以上空いていて、最後にアクセスした日に問題を解いていない場合
+            if (diffDays >= 1 && saved.date === lastAccess && saved.questionsAnswered === 0) {
+                // レベルペナルティ（-3レベル）
+                const currentLevel = app.userLevel || 1;
+                if (currentLevel > 1) {
+                    const penaltyLevels = 3;
+                    const newLevel = Math.max(1, currentLevel - penaltyLevels);
+                    const levelDiff = currentLevel - newLevel;
+                    
+                    app.userLevel = newLevel;
+                    // 経験値も調整（レベルに合わせて）
+                    app.userExp = Math.max(0, (app.userExp || 0) - (levelDiff * 100));
+                    
+                    // ペナルティ通知を保存
+                    localStorage.setItem('takken_level_penalty', `${levelDiff}レベル下がりました（昨日学習しなかったため）`);
+                }
+            }
         }
     }
+    
+    // 日次統計を更新
+    if (dailyStats) {
+        const saved = JSON.parse(dailyStats);
+        
+        if (saved.date === today) {
+            // 今日のデータ
+            app.dailyStats = saved;
+        } else {
+            // 新しい日のデータに初期化
+            app.dailyStats = {
+                date: today,
+                questionsAnswered: 0,
+                correctAnswers: 0
+            };
+        }
+    } else {
+        // 初回起動
+        app.dailyStats = {
+            date: today,
+            questionsAnswered: 0,
+            correctAnswers: 0
+        };
+    }
+    
+    // 今日の日付を最後のアクセス日として保存
+    localStorage.setItem(app.STORAGE_KEYS.LAST_ACCESS, today);
+    
     if (achievements) app.achievements = JSON.parse(achievements);
     if (userLevel) {
         const levelData = JSON.parse(userLevel);
-        app.userLevel = levelData.level || 1;
-        app.userExp = levelData.exp || 0;
+        // ペナルティ後のレベルを保持しない限り、保存されたレベルを使用
+        if (!app.userLevel || app.userLevel === 1) {
+            app.userLevel = levelData.level || 1;
+            app.userExp = levelData.exp || 0;
+        }
+    }
+    
+    // ストリークデータの読み込み（重要：先にuserLevelをロードしてから）
+    if (streakData) {
+        const saved = JSON.parse(streakData);
+        app.streak = saved.streak || 0;
+        app.maxStreak = saved.maxStreak || 0;
+        console.log('Loaded streak from storage:', app.streak, 'max:', app.maxStreak);
+    } else {
+        // 初回起動時
+        app.streak = 0;
+        app.maxStreak = 0;
+        console.log('No streak data found, initializing to 0');
     }
     if (totalTime) {
         const savedTime = parseInt(totalTime);
@@ -111,6 +214,10 @@ function saveData() {
     localStorage.setItem(app.STORAGE_KEYS.USER_LEVEL, JSON.stringify({
         level: app.userLevel,
         exp: app.userExp
+    }));
+    localStorage.setItem(app.STORAGE_KEYS.STREAK_DATA, JSON.stringify({
+        streak: app.streak,
+        maxStreak: app.maxStreak
     }));
     
     const currentTotalTime = parseInt(localStorage.getItem(app.STORAGE_KEYS.TOTAL_TIME) || 0);
@@ -133,7 +240,13 @@ function initEventListeners() {
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             if (!app.isAnswered) {
-                checkAnswer(e.target.dataset.answer === 'true');
+                // クリックした要素から最も近い.answer-btnを取得
+                const answerBtn = e.target.closest('.answer-btn');
+                if (answerBtn) {
+                    // data-answer属性の値を取得（'true' または 'false' の文字列）
+                    const answerValue = answerBtn.dataset.answer === 'true';
+                    checkAnswer(answerValue);
+                }
             }
         });
     });
@@ -161,6 +274,19 @@ function initEventListeners() {
     }
 }
 
+// ポイントシステムの説明を表示
+function showPointSystemInfo() {
+    alert(`🎯 新ポイントシステムのご案内\n\n` +
+          `正解でポイントを獲得！\n` +
+          `• 1問正解 = 1ポイント\n` +
+          `• 2 COMBO!! = 2ポイント\n` +
+          `• 3 COMBO!! = 4ポイント\n` +
+          `• 4 COMBO!! = 8ポイント（最大）\n\n` +
+          `100ポイントでレベルアップ！\n` +
+          `レベル100到達で試験合格確実！\n\n` +
+          `🔥 連続正解でCOMBOを決めよう！`);
+}
+
 // スタート画面表示
 function showStartScreen() {
     // 全エリアを非表示
@@ -173,6 +299,8 @@ function showStartScreen() {
 // モード開始
 function startMode(mode) {
     app.currentMode = mode;
+    // ストリークは継続する（リセットしない）
+    console.log('Starting mode:', mode, 'Current streak:', app.streak);
     
     // スタート画面を非表示
     document.getElementById('startScreen').classList.add('hidden');
@@ -250,33 +378,74 @@ function checkAnswer(userAnswer) {
     resultDiv.classList.remove('hidden', 'correct', 'incorrect');
     
     if (isCorrect) {
-        resultDiv.textContent = '🎉 正解！';
-        resultDiv.classList.add('correct');
-        app.stats.correct++;
-        app.stats.categories[app.currentQuestion.category].correct++;
-        
         // ストリーク更新
         app.streak++;
+        
+        
+        // ヘッダーのストリーク表示を更新（最大99）
+        document.getElementById('streakDisplay').textContent = Math.min(app.streak, 99);
+        
         if (app.streak > app.maxStreak) {
             app.maxStreak = app.streak;
         }
         
+        // ポイント計算（連続正解でボーナス、最大4連続まで）
+        let points = 1;
+        if (app.streak > 1) {
+            const effectiveStreak = Math.min(app.streak, 4);
+            points = Math.pow(2, effectiveStreak - 1);
+        }
+        
+        // 結果表示
+        resultDiv.classList.add('correct');
+        
+        // COMBO表示（最大99まで表示）
+        const displayStreak = Math.min(app.streak, 99);
+        
+        // HTML形式で確実に表示（スマホ対応）
+        if (app.streak > 1) {
+            // COMBOを目立つように別要素で表示（重要：display指定で確実に表示）
+            const comboHtml = `
+                <div style="display: block !important; font-size: 1em !important; margin-bottom: 5px !important; color: white !important;">🎉 正解！</div>
+                <div style="display: block !important; font-size: 1.8em !important; color: #ff6b35 !important; font-weight: bold !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important; line-height: 1.2 !important;">
+                    🔥 ${displayStreak} COMBO!!
+                </div>
+                <div style="display: block !important; font-size: 1.1em !important; margin-top: 5px !important; color: white !important;">+${points}ポイント獲得！</div>
+            `;
+            resultDiv.innerHTML = comboHtml;
+            // モバイル対応のため強制的に表示
+            resultDiv.style.display = 'block';
+            resultDiv.style.visibility = 'visible';
+            resultDiv.style.opacity = '1';
+        } else {
+            const normalHtml = `
+                <div style="display: block !important; font-size: 1.1em !important; color: white !important;">🎉 正解！</div>
+                <div style="display: block !important; font-size: 1em !important; margin-top: 5px !important; color: white !important;">+1ポイント獲得</div>
+            `;
+            resultDiv.innerHTML = normalHtml;
+            // モバイル対応のため強制的に表示
+            resultDiv.style.display = 'block';
+            resultDiv.style.visibility = 'visible';
+            resultDiv.style.opacity = '1';
+        }
+        
+        app.stats.correct++;
+        app.stats.categories[app.currentQuestion.category].correct++;
+        
         // 経験値獲得
-        app.userExp += 10;
+        app.userExp += points;
     } else {
         resultDiv.textContent = '❌ 不正解';
         resultDiv.classList.add('incorrect');
         
         // ストリークリセット
         app.streak = 0;
+        document.getElementById('streakDisplay').textContent = Math.min(app.streak, 99);
         
         // 復習リストに追加
         if (!app.reviewQuestions.includes(app.currentQuestion.id)) {
             app.reviewQuestions.push(app.currentQuestion.id);
         }
-        
-        // 経験値獲得（少なめ）
-        app.userExp += 3;
     }
     
     // 統計更新
@@ -349,8 +518,7 @@ function startReview() {
     showQuestion();
 }
 
-// グローバル関数として公開
-window.showStartScreen = showStartScreen;
+// グローバル関数として公開（DOMContentLoadedで既に設定済み）
 
 // 復習エリア更新
 function updateReviewArea() {
@@ -466,10 +634,10 @@ function updateExamCountdown() {
 // 習熟度計算
 function calculateMastery() {
     const categories = [
-        { key: 'rights', name: '権利関係', total: 65 },
-        { key: 'law', name: '法令上の制限', total: 65 },
-        { key: 'tax', name: '税・その他', total: 60 },
-        { key: 'business', name: '宅建業法', total: 60 }
+        { key: 'rights', name: '権利関係', total: 82 },
+        { key: 'law', name: '法令上の制限', total: 57 },
+        { key: 'tax', name: '税・その他', total: 52 },
+        { key: 'business', name: '宅建業法', total: 59 }
     ];
     
     const mastery = {};
@@ -513,7 +681,7 @@ function updateHeaderStats() {
     const correctRate = app.stats.total > 0 ? Math.round((app.stats.correct / app.stats.total) * 100) : 0;
     document.getElementById('correctRateDisplay').textContent = correctRate;
     
-    document.getElementById('streakDisplay').textContent = app.streak;
+    document.getElementById('streakDisplay').textContent = Math.min(app.streak, 99);
     
     // レベル表示を更新
     document.getElementById('currentLevel').textContent = app.userLevel;
@@ -592,23 +760,42 @@ function updateLevel() {
     document.getElementById('expText').textContent = `${currentLevelExp} / ${expPerLevel} EXP`;
 }
 
+// レベルリセット確認
+function resetLevelConfirm() {
+    if (confirm('レベルをリセットしますか？\n（経験値が0に戻ります）')) {
+        app.userExp = 0;
+        app.userLevel = 1;
+        localStorage.setItem(app.STORAGE_KEYS.USER_EXP, '0');
+        updateLevel();
+        alert('レベルがリセットされました');
+    }
+}
+
 // 習熟度コンパクト表示
 function updateMasteryCompact() {
     const masteryDiv = document.getElementById('masteryCompact');
     if (!masteryDiv) return;
     
     const categories = [
-        { key: 'rights', name: '権利関係' },
-        { key: 'law', name: '法令制限' },
-        { key: 'tax', name: '税・その他' },
-        { key: 'business', name: '宅建業法' }
+        { key: 'rights', name: '権利関係', total: 82 },
+        { key: 'law', name: '法令制限', total: 57 },
+        { key: 'tax', name: '税・その他', total: 52 },
+        { key: 'business', name: '宅建業法', total: 59 }
     ];
     
     masteryDiv.innerHTML = '';
     
     categories.forEach(cat => {
-        const catStat = app.stats.categories[cat.key];
-        const percentage = catStat.total > 0 ? Math.round((catStat.correct / catStat.total) * 100) : 0;
+        // 正解した問題をカウント
+        const answeredCorrectly = new Set();
+        app.questionHistory.forEach(h => {
+            const question = questions.find(q => q.id === h.questionId);
+            if (question && question.category === cat.key && h.isCorrect) {
+                answeredCorrectly.add(h.questionId);
+            }
+        });
+        
+        const percentage = Math.round((answeredCorrectly.size / cat.total) * 100);
         
         const item = document.createElement('div');
         item.className = 'mastery-item-compact';
@@ -822,10 +1009,17 @@ if ('serviceWorker' in navigator) {
 
 // 統計情報ポップアップ表示
 function showStatInfo(type) {
+    console.log('showStatInfo called with type:', type);
+    
     const popup = document.getElementById('statPopup');
     const title = document.getElementById('popupTitle');
     const description = document.getElementById('popupDescription');
     const details = document.getElementById('popupDetails');
+    
+    if (!popup || !title || !description || !details) {
+        console.error('Popup elements not found');
+        return;
+    }
     
     popup.classList.remove('hidden');
     
@@ -872,21 +1066,53 @@ function showStatInfo(type) {
             details.innerHTML = `
                 <div>🔥 現在の連続正解: <strong>${app.streak}問</strong></div>
                 <div>🏆 最高記録: <strong>${app.maxStreak}問</strong></div>
-                <div>💰 ボーナスポイント:</div>
-                <div>　2連続 = 2pts, 3連続 = 4pts</div>
-                <div>　4連続 = 8pts, 5連続 = 16pts...</div>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                    <strong>💰 COMBOボーナス：</strong><br>
+                    1問正解 = 1ポイント<br>
+                    2 COMBO = 2ポイント<br>
+                    3 COMBO = 4ポイント<br>
+                    4 COMBO以上 = 8ポイント（最大）<br>
+                    <small>※間違えるとCOMBOリセット</small>
+                </div>
             `;
             break;
             
         case 'level':
             const expPercent = app.userExp % 100;
             title.textContent = '📊 レベルシステム';
-            description.textContent = 'レベル100で合格確実！連続正解でポイント倍増のチャンス。';
+            description.textContent = 'レベル100で合格確実！連続正解でCOMBOボーナス！';
             details.innerHTML = `
                 <div>📊 現在のレベル: <strong>Lv.${app.userLevel}</strong></div>
                 <div>✨ 経験値: <strong>${expPercent}/100</strong></div>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                    <strong>🔥 COMBOシステム：</strong><br>
+                    1問正解 = 1ポイント<br>
+                    2 COMBO = 2ポイント<br>
+                    3 COMBO = 4ポイント<br>
+                    4 COMBO以上 = 8ポイント（最大）<br>
+                    <small>※5連続、6連続...も8ポイント</small><br>
+                    <small>※100ポイントで1レベルアップ</small><br>
+                    <small>※レベル100到達で合格確実！</small>
+                </div>
                 <div>🎯 レベル100まで: <strong>あと${100 - app.userLevel}レベル</strong></div>
-                <div>💡 連続正解でポイント倍増！</div>
+                <div>💡 COMBOを繋いで効率的にレベルアップ！</div>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+                    <button onclick="confirmDataReset()" style="
+                        background: #ff3b30;
+                        color: white;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 6px;
+                        font-size: 14px;
+                        cursor: pointer;
+                        width: 100%;
+                    ">
+                        🗑️ 全データをリセット
+                    </button>
+                    <small style="display: block; margin-top: 5px; color: #666;">
+                        ※レベル、統計、履歴など全てが削除されます
+                    </small>
+                </div>
             `;
             break;
             
@@ -906,6 +1132,65 @@ function showStatInfo(type) {
 // ポップアップを閉じる
 function closeStatPopup() {
     document.getElementById('statPopup').classList.add('hidden');
+}
+
+// 全データをリセット
+function resetAllData() {
+    if (confirm('本当に全ての学習データをリセットしますか？\nこの操作は取り消せません。')) {
+        // LocalStorageの全データをクリア
+        Object.values(app.STORAGE_KEYS).forEach(key => {
+            localStorage.removeItem(key);
+        });
+        
+        // 初回起動フラグもリセット
+        localStorage.removeItem('takken_point_info_seen');
+        
+        // アプリの状態を初期化
+        app.history = [];
+        app.stats = {
+            total: 0,
+            correct: 0,
+            categories: {
+                rights: { total: 0, correct: 0 },
+                law: { total: 0, correct: 0 },
+                tax: { total: 0, correct: 0 },
+                business: { total: 0, correct: 0 }
+            }
+        };
+        app.reviewQuestions = [];
+        app.dailyStats = {
+            date: new Date().toDateString(),
+            questionsAnswered: 0,
+            correctAnswers: 0
+        };
+        app.streak = 0;
+        app.maxStreak = 0;
+        app.achievements = {
+            firstQuestion: false,
+            tenQuestions: false,
+            perfectStreak: false
+        };
+        app.userLevel = 1;
+        app.userExp = 0;
+        
+        // ページをリロード
+        location.reload();
+    }
+}
+
+// リセット確認（ポップアップから呼ばれる）
+function confirmDataReset() {
+    // まずポップアップを閉じる
+    closeStatPopup();
+    
+    // 少し遅延してから確認ダイアログを表示
+    setTimeout(() => {
+        if (confirm('⚠️ 警告\n\n本当に全ての学習データをリセットしますか？\n\n削除されるデータ：\n• レベルと経験値\n• 学習履歴と統計\n• 実績とストリーク\n• 復習リスト\n\nこの操作は取り消せません。')) {
+            if (confirm('最終確認\n\n本当によろしいですか？')) {
+                resetAllData();
+            }
+        }
+    }, 100);
 }
 
 // 分析表示
