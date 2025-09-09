@@ -347,8 +347,10 @@ function startMode(mode) {
 function showQuestion() {
     // 復習モードで問題がない場合の処理
     if (app.currentMode === 'review' && app.reviewQuestions.length === 0) {
+        console.log('復習リストが空になりました。復習完了！');
         alert('🎉 復習完了！全ての問題をマスターしました！');
         showScreen('start');
+        app.currentMode = 'random'; // モードをリセット
         return;
     }
     
@@ -373,12 +375,15 @@ function showQuestion() {
         question = app.categoryQuestions[Math.floor(Math.random() * app.categoryQuestions.length)];
     } else if (app.currentMode === 'review' && app.reviewQuestions.length > 0) {
         // 復習リストからランダムに選択（同じ問題の繰り返しを避ける）
+        console.log('復習モード - 現在の復習リスト:', app.reviewQuestions);
         const randomIndex = Math.floor(Math.random() * app.reviewQuestions.length);
         const reviewId = app.reviewQuestions[randomIndex];
+        console.log('選択された復習問題ID:', reviewId, 'インデックス:', randomIndex);
         question = questions.find(q => q.id === reviewId);
         
         // 問題が見つからない場合は復習リストから削除して再選択
         if (!question) {
+            console.log('問題が見つからない。削除して再選択:', reviewId);
             app.reviewQuestions.splice(randomIndex, 1);
             saveData();
             showQuestion(); // 再帰的に次の問題を選択
@@ -462,9 +467,11 @@ function checkAnswer(userAnswer) {
         app.streak = 0;
         document.getElementById('streakDisplay').textContent = Math.min(app.streak, 99);
         
-        // 復習リストに追加
+        // 復習リストに追加（重複チェック）
         if (!app.reviewQuestions.includes(app.currentQuestion.id)) {
             app.reviewQuestions.push(app.currentQuestion.id);
+            console.log('復習リストに追加:', app.currentQuestion.id);
+            console.log('現在の復習リスト:', app.reviewQuestions);
         }
     }
     
@@ -504,7 +511,13 @@ function checkAnswer(userAnswer) {
     
     // 復習モードの場合、正解したら復習リストから削除
     if (app.currentMode === 'review' && isCorrect) {
+        console.log('復習リスト削除前:', app.reviewQuestions);
+        console.log('削除する問題ID:', app.currentQuestion.id);
+        const beforeLength = app.reviewQuestions.length;
         app.reviewQuestions = app.reviewQuestions.filter(id => id !== app.currentQuestion.id);
+        const afterLength = app.reviewQuestions.length;
+        console.log('復習リスト削除後:', app.reviewQuestions);
+        console.log(`削除結果: ${beforeLength} → ${afterLength}`);
         updateReviewArea();
         saveData(); // 復習リストの変更を保存
     }
