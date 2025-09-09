@@ -111,7 +111,18 @@ function loadData() {
     const streakData = localStorage.getItem(app.STORAGE_KEYS.STREAK_DATA);
     
     if (history) app.history = JSON.parse(history);
-    if (stats) app.stats = JSON.parse(stats);
+    if (stats) {
+        app.stats = JSON.parse(stats);
+        // カテゴリが存在しない場合は初期化
+        if (!app.stats.categories) {
+            app.stats.categories = {
+                rights: { correct: 0, total: 0 },
+                law: { correct: 0, total: 0 },
+                tax: { correct: 0, total: 0 },
+                business: { correct: 0, total: 0 }
+            };
+        }
+    }
     if (review) app.reviewQuestions = JSON.parse(review);
     
     // 最後のアクセス日をチェック
@@ -900,7 +911,9 @@ function updateMobileStatus() {
     
     mobileMastery.innerHTML = '';
     categories.forEach(cat => {
-        const correct = app.stats.categories[cat.key]?.correct || 0;
+        // カテゴリの正解数を取得（初期化時はundefinedの可能性があるので0にする）
+        const categoryStats = app.stats.categories[cat.key] || { correct: 0, total: 0 };
+        const correct = categoryStats.correct || 0;
         const percentage = Math.round((correct / cat.total) * 100);
         
         const item = document.createElement('div');
@@ -914,6 +927,8 @@ function updateMobileStatus() {
         `;
         mobileMastery.appendChild(item);
     });
+    
+    console.log('Mobile mastery updated:', app.stats.categories); // デバッグ用
 }
 
 // PWA（Progressive Web App）機能
@@ -1338,5 +1353,8 @@ setInterval(() => {
 
 // ページ読み込み時にモバイルステータスも更新
 document.addEventListener('DOMContentLoaded', () => {
+    // データ読み込み後に更新
+    loadData();
+    updateGamification();
     updateMobileStatus();
 });
