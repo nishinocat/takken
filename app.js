@@ -1335,3 +1335,8 @@ setInterval(() => {
     updateDashboard();
     updateExamCountdown();
 }, 30000); // 30秒ごとに更新
+
+// ページ読み込み時にモバイルステータスも更新
+document.addEventListener('DOMContentLoaded', () => {
+    updateMobileStatus();
+});
