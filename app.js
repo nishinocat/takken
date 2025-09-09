@@ -496,7 +496,23 @@ function checkAnswer(userAnswer) {
     // 解説表示
     document.getElementById('explanation').textContent = app.currentQuestion.explanation;
     document.getElementById('explanation').classList.remove('hidden');
-    document.getElementById('nextBtn').classList.remove('hidden');
+    
+    // 次へボタンの表示とテキスト設定
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.classList.remove('hidden');
+    
+    // 復習モードで最後の問題の場合（正解してこれから削除される問題が最後の1問）
+    if (app.currentMode === 'review' && isCorrect && 
+        app.reviewQuestions.filter(id => id !== app.currentQuestion.id).length === 0) {
+        nextBtn.textContent = 'ホームに戻る 🏠';
+        nextBtn.onclick = () => {
+            showScreen('start');
+            app.currentMode = 'random';
+        };
+    } else {
+        nextBtn.textContent = '次の問題へ →';
+        nextBtn.onclick = showQuestion;
+    }
     
     // ボタン無効化
     document.querySelectorAll('.answer-btn').forEach(btn => {
