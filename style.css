@@ -574,7 +574,7 @@ body {
 }
 
 .answer-btn span:last-child {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #1d1d1f;
 }
@@ -996,6 +996,11 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* スマホ用の回答ボタンテキストサイズ調整 */
+    .answer-btn span:last-child {
+        font-size: 13px;
+    }
+    
     body {
         height: 100vh;
         height: 100dvh; /* Dynamic viewport height */
@@ -1146,10 +1151,14 @@ body {
         height: calc(100vh - 140px);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
     }
     
     .question-container {
         padding: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
     
     .question-meta {
@@ -1173,9 +1182,8 @@ body {
         background: #f9f9fb;
         border-radius: 10px;
         border-left: 3px solid #007aff;
-        max-height: 200px;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        max-height: none;
+        overflow-y: visible;
     }
     
     .answer-area {
@@ -1185,14 +1193,17 @@ body {
     }
     
     .answer-btn {
-        padding: 12px;
-        min-height: 45px;
-        font-size: 13px;
+        padding: 10px 8px;
+        min-height: 40px;
+        font-size: 12px;
         border-radius: 10px;
+        flex-direction: row;
+        gap: 8px;
+        justify-content: center;
     }
     
     .btn-icon {
-        font-size: 18px;
+        font-size: 16px;
     }
     
     .result-box {
