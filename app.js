@@ -365,7 +365,9 @@ function showQuestion() {
         // 分野別では常にランダムに出題
         question = app.categoryQuestions[Math.floor(Math.random() * app.categoryQuestions.length)];
     } else if (app.currentMode === 'review' && app.reviewQuestions.length > 0) {
-        const reviewId = app.reviewQuestions[0];
+        // 復習リストからランダムに選択（同じ問題の繰り返しを避ける）
+        const randomIndex = Math.floor(Math.random() * app.reviewQuestions.length);
+        const reviewId = app.reviewQuestions[randomIndex];
         question = questions.find(q => q.id === reviewId);
     } else {
         question = questions[Math.floor(Math.random() * questions.length)];
@@ -489,6 +491,14 @@ function checkAnswer(userAnswer) {
     if (app.currentMode === 'review' && isCorrect) {
         app.reviewQuestions = app.reviewQuestions.filter(id => id !== app.currentQuestion.id);
         updateReviewArea();
+        
+        // 復習問題がなくなったら通知
+        if (app.reviewQuestions.length === 0) {
+            setTimeout(() => {
+                alert('🎉 復習完了！全ての問題をマスターしました！');
+                showScreen('start');
+            }, 1500);
+        }
     }
     
     // データ保存と統計更新
@@ -796,16 +806,17 @@ function updateMasteryCompact() {
     masteryDiv.innerHTML = '';
     
     categories.forEach(cat => {
-        // 正解した問題をカウント
-        const answeredCorrectly = new Set();
-        app.questionHistory.forEach(h => {
-            const question = questions.find(q => q.id === h.questionId);
-            if (question && question.category === cat.key && h.isCorrect) {
-                answeredCorrectly.add(h.questionId);
-            }
-        });
+        // カテゴリの統計を取得
+        const categoryStats = app.stats.categories[cat.key] || { correct: 0, total: 0 };
+        const correct = categoryStats.correct || 0;
+        const total = categoryStats.total || 0;
         
-        const percentage = Math.round((answeredCorrectly.size / cat.total) * 100);
+        // 回答済み問題数に基づく習熟度計算
+        let percentage = 0;
+        if (total > 0) {
+            // 正答率ベース
+            percentage = Math.round((correct / total) * 100);
+        }
         
         const item = document.createElement('div');
         item.className = 'mastery-item-compact';
@@ -911,10 +922,20 @@ function updateMobileStatus() {
     
     mobileMastery.innerHTML = '';
     categories.forEach(cat => {
-        // カテゴリの正解数を取得（初期化時はundefinedの可能性があるので0にする）
+        // カテゴリの統計を取得
         const categoryStats = app.stats.categories[cat.key] || { correct: 0, total: 0 };
         const correct = categoryStats.correct || 0;
-        const percentage = Math.round((correct / cat.total) * 100);
+        const total = categoryStats.total || 0;
+        
+        // 回答済み問題数に基づく習熟度計算
+        let percentage = 0;
+        if (total > 0) {
+            // 正答率ベース（回答した問題の正答率）
+            percentage = Math.round((correct / total) * 100);
+        } else {
+            // まだ解いていない場合は0%
+            percentage = 0;
+        }
         
         const item = document.createElement('div');
         item.className = 'mobile-mastery-item';
