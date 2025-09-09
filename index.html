@@ -32,27 +32,27 @@
                 </div>
             </div>
             <div class="header-stats">
-                <div class="stat-mini stat-today">
+                <div class="stat-mini stat-today" onclick="showStatInfo('daily')" style="cursor: pointer;">
                     <span>📅今日</span>
                     <strong id="dailyQuestionsDisplay">0</strong>問
                 </div>
-                <div class="stat-mini">
+                <div class="stat-mini" onclick="showStatInfo('time')" style="cursor: pointer;">
                     <span>⏱</span>
                     <strong id="totalTimeDisplay">0</strong>分
                 </div>
-                <div class="stat-mini">
+                <div class="stat-mini" onclick="showStatInfo('accuracy')" style="cursor: pointer;">
                     <span>🎯</span>
                     <strong id="correctRateDisplay">0</strong>%
                 </div>
-                <div class="stat-mini">
+                <div class="stat-mini" onclick="showStatInfo('streak')" style="cursor: pointer;">
                     <span>🔥</span>
                     <strong id="streakDisplay">0</strong>
                 </div>
-                <div class="stat-mini">
+                <div class="stat-mini" onclick="showStatInfo('level')" style="cursor: pointer;">
                     <span>Lv.</span>
                     <strong id="currentLevel">1</strong>
                 </div>
-                <div class="achievements-mini">
+                <div class="achievements-mini" onclick="showStatInfo('achievements')" style="cursor: pointer;">
                     <span id="achMini1" class="achievement-mini">🌟</span>
                     <span id="achMini2" class="achievement-mini">⭐</span>
                     <span id="achMini3" class="achievement-mini">💫</span>
@@ -218,6 +218,16 @@
                     </div>
                 </div>
             </aside>
+        </div>
+    </div>
+
+    <!-- 統計情報ポップアップ -->
+    <div id="statPopup" class="stat-popup hidden">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closeStatPopup()">✕</button>
+            <h3 id="popupTitle"></h3>
+            <p id="popupDescription"></p>
+            <div id="popupDetails"></div>
         </div>
     </div>
 

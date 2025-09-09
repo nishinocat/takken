@@ -223,13 +223,8 @@ function showQuestion() {
     if (app.currentMode === 'random') {
         question = questions[Math.floor(Math.random() * questions.length)];
     } else if (app.currentMode === 'category' && app.categoryQuestions.length > 0) {
-        const mode = document.querySelector('input[name="categoryMode"]:checked').value;
-        if (mode === 'random') {
-            question = app.categoryQuestions[Math.floor(Math.random() * app.categoryQuestions.length)];
-        } else {
-            question = app.categoryQuestions[app.currentQuestionIndex % app.categoryQuestions.length];
-            app.currentQuestionIndex++;
-        }
+        // 分野別では常にランダムに出題
+        question = app.categoryQuestions[Math.floor(Math.random() * app.categoryQuestions.length)];
     } else if (app.currentMode === 'review' && app.reviewQuestions.length > 0) {
         const reviewId = app.reviewQuestions[0];
         question = questions.find(q => q.id === reviewId);
@@ -823,6 +818,94 @@ if ('serviceWorker' in navigator) {
                 console.log('Service Worker登録失敗:', error);
             });
     });
+}
+
+// 統計情報ポップアップ表示
+function showStatInfo(type) {
+    const popup = document.getElementById('statPopup');
+    const title = document.getElementById('popupTitle');
+    const description = document.getElementById('popupDescription');
+    const details = document.getElementById('popupDetails');
+    
+    popup.classList.remove('hidden');
+    
+    switch(type) {
+        case 'daily':
+            title.textContent = '📅 今日の学習';
+            description.textContent = '本日の学習進捗状況です。毎日コツコツ続けることが合格への近道！';
+            details.innerHTML = `
+                <div>✅ 今日の解答数: <strong>${app.dailyStats.questionsAnswered}問</strong></div>
+                <div>🎯 今日の正解数: <strong>${app.dailyStats.correctAnswers}問</strong></div>
+                <div>📊 今日の正答率: <strong>${app.dailyStats.questionsAnswered > 0 ? Math.round((app.dailyStats.correctAnswers / app.dailyStats.questionsAnswered) * 100) : 0}%</strong></div>
+                <div>🎯 目標達成率: <strong>${Math.round((app.dailyStats.questionsAnswered / 50) * 100)}%</strong></div>
+            `;
+            break;
+            
+        case 'time':
+            const totalMinutes = Math.floor(parseInt(localStorage.getItem(app.STORAGE_KEYS.TOTAL_TIME) || 0) / 60);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            title.textContent = '⏱ 累計学習時間';
+            description.textContent = '継続は力なり！積み重ねた時間があなたの実力になります。';
+            details.innerHTML = `
+                <div>📚 総学習時間: <strong>${hours}時間${minutes}分</strong></div>
+                <div>📅 1日平均: <strong>${Math.round(totalMinutes / 30)}分</strong>（30日換算）</div>
+                <div>💡 ヒント: 1日30分の学習で合格率UP！</div>
+            `;
+            break;
+            
+        case 'accuracy':
+            const rate = app.stats.total > 0 ? Math.round((app.stats.correct / app.stats.total) * 100) : 0;
+            title.textContent = '🎯 正答率';
+            description.textContent = '正確な理解が合格への鍵。間違えた問題は復習モードで完璧に！';
+            details.innerHTML = `
+                <div>✅ 総正解数: <strong>${app.stats.correct}問</strong></div>
+                <div>📝 総解答数: <strong>${app.stats.total}問</strong></div>
+                <div>🎯 正答率: <strong>${rate}%</strong></div>
+                <div>${rate >= 70 ? '🏆 合格圏内です！' : '📚 復習を重ねて70%以上を目指そう！'}</div>
+            `;
+            break;
+            
+        case 'streak':
+            title.textContent = '🔥 連続正解';
+            description.textContent = '連続正解でボーナスポイント獲得！集中力を保って記録更新を目指そう。';
+            details.innerHTML = `
+                <div>🔥 現在の連続正解: <strong>${app.streak}問</strong></div>
+                <div>🏆 最高記録: <strong>${app.maxStreak}問</strong></div>
+                <div>💰 ボーナスポイント:</div>
+                <div>　2連続 = 2pts, 3連続 = 4pts</div>
+                <div>　4連続 = 8pts, 5連続 = 16pts...</div>
+            `;
+            break;
+            
+        case 'level':
+            const expPercent = app.userExp % 100;
+            title.textContent = '📊 レベルシステム';
+            description.textContent = 'レベル100で合格確実！連続正解でポイント倍増のチャンス。';
+            details.innerHTML = `
+                <div>📊 現在のレベル: <strong>Lv.${app.userLevel}</strong></div>
+                <div>✨ 経験値: <strong>${expPercent}/100</strong></div>
+                <div>🎯 レベル100まで: <strong>あと${100 - app.userLevel}レベル</strong></div>
+                <div>💡 連続正解でポイント倍増！</div>
+            `;
+            break;
+            
+        case 'achievements':
+            title.textContent = '🏆 実績';
+            description.textContent = '学習の節目ごとに実績を解除！全実績コンプリートを目指そう。';
+            details.innerHTML = `
+                <div>${app.achievements.firstQuestion ? '✅' : '❌'} 🌟 初心者: 初めての問題に挑戦</div>
+                <div>${app.achievements.tenQuestions ? '✅' : '❌'} ⭐ 30問達成: 30問解答完了</div>
+                <div>${app.achievements.perfectStreak ? '✅' : '❌'} 💫 連続正解: 5問連続正解</div>
+                <div>解除率: <strong>${[app.achievements.firstQuestion, app.achievements.tenQuestions, app.achievements.perfectStreak].filter(a => a).length}/3</strong></div>
+            `;
+            break;
+    }
+}
+
+// ポップアップを閉じる
+function closeStatPopup() {
+    document.getElementById('statPopup').classList.add('hidden');
 }
 
 // 分析表示
