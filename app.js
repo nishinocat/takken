@@ -598,8 +598,11 @@ function updateDashboard() {
     const displayTime = Math.floor((totalTime + sessionTime) / 60);
     document.getElementById('totalTimeDisplay').textContent = displayTime;
     
-    // 延べ問題数
-    document.getElementById('totalQuestionsDisplay').textContent = app.stats.total;
+    // 延べ問題数（要素が存在する場合のみ更新）
+    const totalQuestionsDisplay = document.getElementById('totalQuestionsDisplay');
+    if (totalQuestionsDisplay) {
+        totalQuestionsDisplay.textContent = app.stats.total;
+    }
     
     // 正答率
     const correctRate = app.stats.total > 0 
