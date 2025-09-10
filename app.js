@@ -592,30 +592,51 @@ function updateStats() {
 
 // ダッシュボード更新
 function updateDashboard() {
-    // 学習時間
-    const totalTime = parseInt(localStorage.getItem(app.STORAGE_KEYS.TOTAL_TIME) || 0);
-    const sessionTime = Math.floor((Date.now() - app.sessionStartTime) / 1000);
-    const displayTime = Math.floor((totalTime + sessionTime) / 60);
-    document.getElementById('totalTimeDisplay').textContent = displayTime;
+    // ダッシュボード要素の更新（要素が存在する場合のみ）
     
-    // 延べ問題数（要素が存在する場合のみ更新）
+    // 学習時間
+    const totalTimeDisplay = document.getElementById('totalTimeDisplay');
+    if (totalTimeDisplay) {
+        const totalTime = parseInt(localStorage.getItem(app.STORAGE_KEYS.TOTAL_TIME) || 0);
+        const sessionTime = Math.floor((Date.now() - app.sessionStartTime) / 1000);
+        const displayTime = Math.floor((totalTime + sessionTime) / 60);
+        totalTimeDisplay.textContent = displayTime;
+    }
+    
+    // 延べ問題数
     const totalQuestionsDisplay = document.getElementById('totalQuestionsDisplay');
     if (totalQuestionsDisplay) {
         totalQuestionsDisplay.textContent = app.stats.total;
     }
     
     // 正答率
-    const correctRate = app.stats.total > 0 
-        ? Math.round((app.stats.correct / app.stats.total) * 100) 
-        : 0;
-    document.getElementById('correctRateDisplay').textContent = correctRate;
+    const correctRateDisplay = document.getElementById('correctRateDisplay');
+    if (correctRateDisplay) {
+        const correctRate = app.stats.total > 0 
+            ? Math.round((app.stats.correct / app.stats.total) * 100) 
+            : 0;
+        correctRateDisplay.textContent = correctRate;
+    }
     
-    // 今日の問題数
-    const today = new Date().toDateString();
-    const todayQuestions = app.history.filter(h => 
-        new Date(h.timestamp).toDateString() === today
-    ).length;
-    document.getElementById('todayQuestionsDisplay').textContent = todayQuestions;
+    // 今日の問題数（ヘッダーの表示用）
+    const todayQuestionsDisplay = document.getElementById('todayQuestionsDisplay');
+    if (todayQuestionsDisplay) {
+        const today = new Date().toDateString();
+        const todayQuestions = app.history.filter(h => 
+            new Date(h.timestamp).toDateString() === today
+        ).length;
+        todayQuestionsDisplay.textContent = todayQuestions;
+    }
+    
+    // 今日の問題数（別表示用）
+    const dailyQuestionsDisplay = document.getElementById('dailyQuestionsDisplay');
+    if (dailyQuestionsDisplay) {
+        const today = new Date().toDateString();
+        const todayQuestions = app.history.filter(h => 
+            new Date(h.timestamp).toDateString() === today
+        ).length;
+        dailyQuestionsDisplay.textContent = todayQuestions;
+    }
 }
 
 // サイドバー分析表示
