@@ -1,4 +1,4 @@
-const CACHE_NAME = 'takken-master-v3';
+const CACHE_NAME = 'takken-master-v4-fix';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -10,6 +10,9 @@ const urlsToCache = [
 
 // Service Workerのインストール
 self.addEventListener('install', (event) => {
+    // 新しいService Workerを即座に有効化
+    self.skipWaiting();
+    
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
@@ -66,6 +69,7 @@ self.addEventListener('fetch', (event) => {
 
 // キャッシュの更新
 self.addEventListener('activate', (event) => {
+    // 即座にコントロールを取得
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
@@ -76,6 +80,9 @@ self.addEventListener('activate', (event) => {
                     }
                 })
             );
+        }).then(() => {
+            // すべてのクライアントを即座に制御
+            return self.clients.claim();
         })
     );
 });
